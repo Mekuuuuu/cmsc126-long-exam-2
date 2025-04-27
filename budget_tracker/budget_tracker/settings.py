@@ -123,6 +123,9 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",  # Pointing to the global "static" folder
 ]
 
+# Redirect to the home page after login
+LOGIN_REDIRECT_URL = 'home'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
