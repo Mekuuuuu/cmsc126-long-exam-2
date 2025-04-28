@@ -1,56 +1,20 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700&display=swap">
     <title>Login</title>
-    <style>
-        .error-message {
-            color: white;
-            background-color: #d93025;
-            padding: 8px 12px;
-            border-radius: 4px;
-            margin: 4px 0;
-            font-size: 14px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .container {
-            max-width: 400px;
-            margin: 40px auto;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border-radius: 8px;
-        }
-        button {
-            background-color: #1a73e8;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-        }
-        button:hover {
-            background-color: #1557b0;
-        }
-    </style>
+
 </head>
+
 <body>
     <div class="container">
         <h2>Login</h2>
+        <h3>Login to access your account</h3>
         <form method="POST" action="{% url 'login' %}">
             {% csrf_token %}
             {% for field in form %}
@@ -58,20 +22,28 @@
                 {{ field.label_tag }}
                 {{ field }}
                 {% if field.errors %}
-                    {% for error in field.errors %}
-                        <div class="error-message">{{ error }}</div>
-                    {% endfor %}
+                {% for error in field.errors %}
+                <div class="error-message">{{ error }}</div>
+                {% endfor %}
                 {% endif %}
             </div>
             {% endfor %}
             {% if form.non_field_errors %}
-                {% for error in form.non_field_errors %}
-                    <div class="error-message">{{ error }}</div>
-                {% endfor %}
+            {% for error in form.non_field_errors %}
+            <div class="error-message">{{ error }}</div>
+            {% endfor %}
             {% endif %}
             <button type="submit">Login</button>
         </form>
         <p>Don't have an account? <a href="{% url 'register' %}">Register Here</a></p>
     </div>
+
+    <div class="wrapper">
+        <img src="{% static 'images/simplifyFinances.png' %}" alt="Login Image" class="side-image">
+    </div>
+
+    <img src="{% static 'images/circleStar.png' %}" alt="Corner Image" class="corner-image">
+
 </body>
+
 </html>

@@ -1,0 +1,142 @@
+body {
+    background-color: #1A1E1C;
+    /* Light background for contrast */
+    font-family: 'Geist', sans-serif;
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    /* center vertically */
+    justify-content: flex-start;
+    /* stay on the left */
+    height: 100vh;
+    background: radial-gradient(circle at top right, rgba(43, 179, 42, 0.2) 0%, transparent 40%), #1A1E1C;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    /* center both container and image vertically */
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 1200px;
+    /* control the total width */
+}
+
+.corner-image {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    width: 25%;
+    /* Makes the image 25% of the viewport width */
+    height: auto;
+    /* Maintains the aspect ratio */
+    z-index: 999;
+}
+
+.container {
+    width: 100%;
+    max-width: 450px;
+    margin-left: 120px;
+    padding: 25px;
+    border: 2px solid #2BB32A;
+    border-radius: 24px;
+    background: linear-gradient(#3D544D, #1A1E1C, #1A1E1C);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.side-image {
+    width: 500px;
+    /* or whatever size you want */
+    height: auto;
+    margin-left: 100px;
+    /* space between form and image */
+}
+
+h2 {
+    text-align: left;
+    color: #FFFFFF;
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+h3 {
+    font-weight: normal;
+    text-align: left;
+    font-size: 14px;
+    color: #FFFFFF;
+    margin-top: 5px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #E0F6E7;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #7EA18A;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #121413;
+    color: #ADB2B1;
+    height: 40px;
+}
+
+.error-message {
+    color: rgb(255, 255, 255);
+    background-color: #b90c00;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin: 4px 0;
+    font-size: 12px;
+    width: 100%;
+    /* Add this line */
+    box-sizing: border-box;
+    /* Ensures it respects the padding and width */
+}
+
+button {
+    background-color: #2BB32A;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #248824;
+}
+
+p {
+    color: #7EA18A;
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+a {
+    font-weight: bold;
+    color: #2BB32A;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
