@@ -37,6 +37,13 @@ body {
     z-index: 999;
 }
 
+.side-image {
+    width: 500px;
+    /* or whatever size you want */
+    height: auto;
+    margin-left: 100px;
+    /* space between form and image */
+}
 .container {
     width: 100%;
     max-width: 450px;
@@ -46,14 +53,6 @@ body {
     border-radius: 24px;
     background: linear-gradient(#3D544D, #1A1E1C, #1A1E1C);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.side-image {
-    width: 500px;
-    /* or whatever size you want */
-    height: auto;
-    margin-left: 100px;
-    /* space between form and image */
 }
 
 h2 {

@@ -1,0 +1,122 @@
+body {
+    background-color: #1A1E1C;
+    font-family: 'Geist', sans-serif;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    background:
+    radial-gradient(circle at top right,rgba(43, 179, 42, 0.2) 0%, transparent 40%),
+  #1A1E1C;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.error-message {
+    color: white;
+    background-color: #d93025;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin: 4px 0;
+    font-size: 14px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+button {
+    box-sizing: border-box;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: #121413;
+    border: 1px solid #3D544D;
+    margin-bottom: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    height: 40px;
+    color: #ADB2B1;
+}
+
+.container {
+    max-width: 450px;
+    width: 100%;
+    margin-left: 120px;
+    padding: 10px 25px 25px 25px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 24px;
+    background: linear-gradient(#3D544D, #1A1E1C,#1A1E1C);
+    border: 1px solid #2BB32A;
+}
+
+.container h2 {
+    margin-bottom: 0px;
+}
+
+.container h2 + p {
+    margin-top: 5px;
+}
+
+p {
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+button {
+    background-color: #2BB32A;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    height: 50px;
+    font-weight: bold;
+    font-size: 15px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+button:hover {
+    background-color:#248824;
+    border-radius: 8px;
+}
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    /* center both container and image vertically */
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 1200px;
+    /* control the total width */
+}
+
+.corner-image {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    width: 25%;
+    /* Makes the image 25% of the viewport width */
+    height: auto;
+    /* Maintains the aspect ratio */
+    z-index: 999;
+}
+
+.side-image {
+    width: 600px;
+    /* or whatever size you want */
+    height: auto;
+    margin-left: 100px;
+    /* space between form and image */
+}
