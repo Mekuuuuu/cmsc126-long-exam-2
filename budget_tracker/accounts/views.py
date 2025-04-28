@@ -4,40 +4,44 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.contrib.auth.models import User
-from .forms import RegisterForm 
+from .forms import RegisterForm, LoginForm
 
 def register_view(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get("username")
+            first_name = form.cleaned_data.get("first_name")
+            last_name = form.cleaned_data.get("last_name")
+            email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
-            user = User.objects.create_user(username=username, password=password)
+            print(password)
+            
+            # Create user with email as username
+            user = User.objects.create_user(
+                username=email,  # Using email as username
+                email=email,
+                password=password,
+                first_name=first_name,
+                last_name=last_name
+            )
             login(request, user)
-            # print(f"User {username} registered and logged in.") 
             return redirect('home')
-        else:
-            form = RegisterForm()
-            return render(request, 'accounts/register.html', {'form':form})
     else:
         form = RegisterForm()
-        return render(request, 'accounts/register.html', {'form': form})        
+    return render(request, 'accounts/register.html', {'form': form})
 
 def login_view(request):
-    error_message = ""
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = form.cleaned_data.get('user')
             login(request, user)
             next_url = request.POST.get('next') or request.GET.get('next') or 'home'
             return redirect(next_url)
-        else:
-            error_message = "Invalid credentials"
+    else:
+        form = LoginForm()
     
-    return render(request, 'accounts/login.html', {'error':error_message})        
-            
+    return render(request, 'accounts/login.html', {'form': form})
 
 def logout_view(request):
     if request.method == "POST":
