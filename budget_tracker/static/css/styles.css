@@ -1,5 +1,5 @@
 body {
-    background-color: #1A1E1C;
+    background-color: white;
     font-family: 'Geist', sans-serif;
     color: white;
     display: flex;
@@ -7,8 +7,8 @@ body {
     justify-content: flex-start;
     height: 100vh;
     background:
-    radial-gradient(circle at top right,rgba(43, 179, 42, 0.2) 0%, transparent 40%),
-  #1A1E1C;
+        radial-gradient(circle at top right, rgba(43, 179, 42, 0.2) 0%, transparent 40%),
+        #1A1E1C;
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -53,9 +53,9 @@ button {
     width: 100%;
     margin-left: 120px;
     padding: 10px 25px 25px 25px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 24px;
-    background: linear-gradient(#3D544D, #1A1E1C,#1A1E1C);
+    background: linear-gradient(#3D544D, #1A1E1C, #1A1E1C);
     border: 1px solid #2BB32A;
 }
 
@@ -63,7 +63,7 @@ button {
     margin-bottom: 0px;
 }
 
-.container h2 + p {
+.container h2+p {
     margin-top: 5px;
 }
 
@@ -88,7 +88,7 @@ button {
 }
 
 button:hover {
-    background-color:#248824;
+    background-color: #248824;
     border-radius: 8px;
 }
 

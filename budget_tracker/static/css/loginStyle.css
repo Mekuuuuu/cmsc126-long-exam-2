@@ -19,12 +19,15 @@ body {
 .wrapper {
     display: flex;
     align-items: center;
-    /* center both container and image vertically */
-    justify-content: flex-start;
+    justify-content: center;
+    /* Ensure both children (container and image) are centered */
     width: 100%;
-    max-width: 1200px;
-    /* control the total width */
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 40px;
 }
+
 
 .corner-image {
     position: fixed;
@@ -41,13 +44,13 @@ body {
     width: 500px;
     /* or whatever size you want */
     height: auto;
-    margin-left: 100px;
+    margin-left: 20px;
     /* space between form and image */
 }
+
 .container {
     width: 100%;
     max-width: 450px;
-    margin-left: 120px;
     padding: 25px;
     border: 2px solid #2BB32A;
     border-radius: 24px;
@@ -138,4 +141,57 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+
+@media (max-width: 1000px) {
+    .wrapper {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        margin: 50px;
+    }
+
+    .side-image {
+        margin-left: 0;
+        /* Remove left margin */
+        margin: 20px 0 0 0;
+        /* Top margin only */
+        width: 80%;
+        max-width: 300px;
+    }
+
+    .container {
+        margin-left: 0;
+        /* Remove left margin */
+        margin: 20px;
+        width: 90%;
+        max-width: 400px;
+    }
+
+
+}
+
+/* Even smaller screens (mobile phones) */
+@media (max-width: 600px) {
+    .wrapper {
+        margin: 20px;
+    }
+
+    .container {
+        padding: 20px;
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .side-image {
+        width: 70%;
+        max-width: 250px;
+    }
+
+    h2,
+    h3,
+    p {
+        text-align: left;
+    }
 }

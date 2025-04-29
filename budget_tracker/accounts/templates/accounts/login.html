@@ -5,45 +5,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/loginStyle.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700&display=swap">
     <title>Login</title>
 
 </head>
 
 <body>
-    <div class="container">
-        <h2>Login</h2>
-        <h3>Login to access your account</h3>
-        <form method="POST" action="{% url 'login' %}">
-            {% csrf_token %}
-            {% for field in form %}
-            <div class="form-group">
-                {{ field.label_tag }}
-                {{ field }}
-                {% if field.errors %}
-                {% for error in field.errors %}
+    <div class="wrapper">
+        <div class="container">
+            <h2>Login</h2>
+            <h3>Login to access your account</h3>
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                    {% for error in field.errors %}
+                    <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                {% endfor %}
+                {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
                 <div class="error-message">{{ error }}</div>
                 {% endfor %}
                 {% endif %}
-            </div>
-            {% endfor %}
-            {% if form.non_field_errors %}
-            {% for error in form.non_field_errors %}
-            <div class="error-message">{{ error }}</div>
-            {% endfor %}
-            {% endif %}
-            <button type="submit">Login</button>
-        </form>
-        <p>Don't have an account? <a href="{% url 'register' %}">Register Here</a></p>
-    </div>
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <a href="{% url 'register' %}">Register Here</a></p>
+        </div>
 
-    <div class="wrapper">
         <img src="{% static 'images/simplifyFinances.png' %}" alt="Login Image" class="side-image">
     </div>
 
     <img src="{% static 'images/circleStar.png' %}" alt="Corner Image" class="corner-image">
-
 </body>
 
 </html>
