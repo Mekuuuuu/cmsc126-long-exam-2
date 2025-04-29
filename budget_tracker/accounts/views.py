@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.contrib.auth.models import User
 from .forms import RegisterForm, LoginForm
+from transactions.models import Transaction
 
 def register_view(request):
     if request.method == "POST":
@@ -53,7 +54,12 @@ def logout_view(request):
 # Home View
 @login_required
 def home_view(request):
-    return render(request, 'auth1_app/home.html')
+    transactions = Transaction.objects.filter(user=request.user).order_by('-date')
+    
+    context = {
+        'transactions': transactions,
+    }
+    return render(request, 'auth1_app/home.html', context)
 
 # Protected View
 class ProtectedView(LoginRequiredMixin, View):

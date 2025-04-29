@@ -57,7 +57,7 @@ ROOT_URLCONF = 'budget_tracker.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "accounts/templates"], #was empty
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
