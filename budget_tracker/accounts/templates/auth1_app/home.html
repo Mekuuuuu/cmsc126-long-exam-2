@@ -44,6 +44,7 @@
             <button type="submit">Logout</button>
         </form>
     </div>
+    <button id="openModalBtn">Add Transaction</button>
     <!-- Transactions Section -->
     <h2>Your Transactions</h2>
     <table>
@@ -72,4 +73,85 @@
         </tbody>
     </table>
 </body>
+<div id="transactionModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:999;">
+    <div style="background:white; margin:10% auto; padding:20px; width:400px; border-radius:8px; position:relative;">
+        <h3>Add New Transaction</h3>
+        <form method="POST" action="{% url 'add_transaction' %}">
+            {% csrf_token %}
+
+            <label>Name:</label>
+            <input type="text" name="name" required><br><br>
+
+            <label>Type:</label><br>
+            <input type="radio" id="income" name="type" value="income" required checked>
+            <label for="income">Income</label>
+
+            <input type="radio" id="expense" name="type" value="expense">
+            <label for="expense">Expense</label><br><br>
+
+            <label>Date and Time:</label>
+            <input type="datetime-local" name="datetime" id="datetimeInput" required><br><br>
+
+            <label>Amount:</label>
+            <input type="number" name="amount" step="0.01" required><br><br>
+
+            <label>Category:</label>
+            <select name="category" id="categorySelect" required>
+                {% for cat in categories %}
+                    <option value="{{ cat.id }}" data-type="{{ cat.type }}">{{ cat.name }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label>Description:</label>
+            <textarea name="description" rows="2"></textarea><br><br>
+
+            <button type="submit">Save</button>
+            <button type="button" onclick="closeModal()">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById("transactionModal");
+    const datetimeInput = document.getElementById("datetimeInput");
+    const categorySelect = document.getElementById('categorySelect');
+    const typeRadios = document.querySelectorAll('input[name="type"]');
+
+    document.getElementById("openModalBtn").onclick = () => {
+        modal.style.display = "block";
+
+        // Set current date and time as default
+        const now = new Date();
+        const offset = now.getTimezoneOffset();
+        const localDateTime = new Date(now.getTime() - offset * 60 * 1000).toISOString().slice(0,16);
+        datetimeInput.value = localDateTime;
+
+        // Filter category options based on default 'income' type
+        filterCategories('income');
+    };
+
+    function closeModal() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+
+
+    function filterCategories(selectedType) {
+        Array.from(categorySelect.options).forEach(option => {
+            option.style.display = option.dataset.type === selectedType ? 'block' : 'none';
+        });
+        categorySelect.selectedIndex = -1;
+    }
+
+    typeRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            filterCategories(radio.value);
+        });
+    });
+</script>
 </html>

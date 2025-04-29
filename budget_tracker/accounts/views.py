@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.contrib.auth.models import User
 from .forms import RegisterForm, LoginForm
-from transactions.models import Transaction
+from transactions.models import Transaction, Category
 
 def register_view(request):
     if request.method == "POST":
@@ -55,9 +55,11 @@ def logout_view(request):
 @login_required
 def home_view(request):
     transactions = Transaction.objects.filter(user=request.user).order_by('-date')
-    
+    categories = Category.objects.all()
     context = {
         'transactions': transactions,
+        'categories': categories,
+        
     }
     return render(request, 'auth1_app/home.html', context)
 
@@ -69,3 +71,15 @@ class ProtectedView(LoginRequiredMixin, View):
     
     def get(self, request):
         return render(request, 'registration/protected.html')
+    
+@login_required
+def add_transaction(request):
+    if request.method == "POST":
+        Transaction.objects.create(
+            user=request.user,
+            type=request.POST.get("type"),
+            category=Category.objects.get(id=request.POST.get("category")),
+            amount=request.POST.get("amount"),
+            description=request.POST.get("description")
+        )
+    return redirect('home')
