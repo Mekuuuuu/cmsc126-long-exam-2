@@ -1,0 +1,218 @@
+/* General Reset and Typography */
+body {
+    margin: 20px;
+    padding: 0px;
+    font-family: 'Geist', sans-serif;
+    background-color: #1A1E1C;
+    background: radial-gradient(circle at top right, rgba(43, 179, 42, 0.2) 0%, transparent 40%), #1A1E1C;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: #C0E4CD;
+    box-sizing: border-box;
+
+
+    height: 100vh;
+}
+
+/* Apply box-sizing globally */
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+.container {
+    width: 100%;
+    margin: 0;
+    padding: 24px;
+    border: 2px solid #2BB32A;
+    background: linear-gradient(#182A1B, #0A160F, #0A160F);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.container h2 {
+    margin-top: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* User Greeting */
+.container p {
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+button,
+a {
+    font-family: inherit;
+    background-color: #2BB32A;
+    color: white;
+    padding: 10px 16px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+button:hover,
+a:hover {
+    background-color: #219021;
+}
+
+h2,
+a,
+form {
+    margin-bottom: 10px;
+}
+
+
+/* Profile Section */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    margin: 20px 0 0;
+}
+
+.profile-btn {
+    background-color: #2BB32A;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    margin: 20px;
+    background-color: #0A160F;
+    border: 1px solid #2BB32A;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 1000;
+}
+
+.dropdown-menu a,
+.dropdown-menu button {
+    display: block;
+    background: #0A160F;
+    border: none;
+    color: #C0E4CD;
+    padding: 8px;
+    text-align: left;
+    text-decoration: none;
+    width: 100%;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid #2BB32A;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+    background-color: #2BB32A;
+    color: white;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    margin-top: 8px;
+    background: linear-gradient(#182A1B, #0A160F, #0A160F);
+    border: 1px solid #2BB32A;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 1000;
+    min-width: 220px;
+}
+
+
+
+
+/* Transactions Section */
+.transactions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 0 10px;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border: 2px solid #2BB32A;
+    background: linear-gradient(#182A1B, #0A160F, #0A160F);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+thead th {
+    text-align: center;
+    padding: 12px;
+    background: linear-gradient(#182A1B, #0A160F, #0A160F);
+    border-bottom: 2px solid #2BB32A;
+    border-radius: 12px 12px 0 0;
+}
+
+tbody td {
+    padding: 20px;
+    border-bottom: 1px solid #2BB32A;
+    text-align: center;
+}
+
+.income {
+    color: green;
+    font-weight: bold;
+}
+
+.expense {
+    color: red;
+    font-weight: bold;
+}
+
+/* Modal */
+#transactionModal input,
+#transactionModal textarea,
+#transactionModal select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: inherit;
+}
+
+#transactionModal button {
+    margin-right: 10px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    table th,
+    table td {
+        padding: 8px;
+    }
+}
