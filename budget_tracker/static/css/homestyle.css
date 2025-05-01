@@ -200,6 +200,198 @@ tbody td {
     margin-right: 10px;
 }
 
+/* Add New Transaction */
+
+/* Header */
+.transactions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    color: #ADB2B1;
+}
+
+.transactions-header h2 {
+    margin: 0;
+    color: #ADB2B1;
+}
+
+.transactions-header button {
+    background-color: #2BB32A;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    height: 50px;
+}
+
+.transactions-header button:hover {
+    background-color: #248824;
+}
+
+/* Table */
+.transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #121413;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    color: #ADB2B1;
+}
+
+.transaction-table th,
+.transaction-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #3D544D;
+}
+
+.transaction-table th {
+    background-color: #1A1E1C;
+    color: #2BB32A;
+}
+
+/* Income/Expense Colors */
+.income {
+    color: #2BB32A;
+    font-weight: bold;
+}
+
+.expense {
+    color: #E53935;
+    font-weight: bold;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    overflow: auto;
+}
+
+/* Modal Box */
+.modal-content {
+    background: linear-gradient(to bottom, #182A1B, #0A160F);
+    margin: 10% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 16px;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    color: #C0E4CD;
+    border: 1px solid #2BB32A;
+}
+
+.modal-content label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: 500;
+    color: #C0E4CD;
+}
+
+.modal-content input:not([type="radio"]):not([type="checkbox"]),
+.modal-content select,
+.modal-content textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background-color: #0A120D;
+    border: 1px solid #3D544D;
+    color: #ADB2B1;
+    height: 40px;
+    box-sizing: border-box;
+    box-shadow: 0 0 0 2px #2BB32A;
+}
+/* Radio Buttons */
+.radio-group {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #C0E4CD;
+}
+
+.radio-option input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #2BB32A;
+    border-radius: 50%;
+    background-color: #0A120D;
+    position: relative;
+    cursor: pointer;
+}
+
+.radio-option input[type="radio"]:checked::before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 10px;
+    height: 10px;
+    background-color: #2BB32A;
+    border-radius: 50%;
+}
+
+/* Form Buttons */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.form-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    height: 50px;
+    font-weight: bold;
+    font-size: 15px;
+    color: white;
+}
+
+.form-actions button[type="submit"] {
+    background: linear-gradient(to right, #0D1C13, #1B2D1D);
+    border: 1px solid #2BB32A;
+
+}
+
+.form-actions button[type="submit"]:hover {
+    background-color: #248824;
+}
+
+.form-actions button[type="button"] {
+    background: transparent;
+    border: 1px solid #5A5F5D;
+    color: #ADB2B1;
+}
+
+.form-actions button[type="button"]:hover {
+    background-color: #2A2F2D; /* dark subtle gray */
+    color: white;
+    border-color: #7F8785; /* slightly lighter gray on hover */
+}
+
+
 /* Responsive */
 @media (max-width: 600px) {
     .container {
