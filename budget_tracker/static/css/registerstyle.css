@@ -6,9 +6,7 @@ body {
     align-items: center;
     justify-content: flex-start;
     height: 100vh;
-    background:
-        radial-gradient(circle at top right, rgba(43, 179, 42, 0.2) 0%, transparent 40%),
-        #1A1E1C;
+    background: radial-gradient(circle at top right, rgba(43, 179, 42, 0.2) 0%, transparent 40%),#1A1E1C;
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -51,7 +49,7 @@ button {
 .container {
     max-width: 450px;
     width: 100%;
-    margin-left: 120px;
+    margin-left: 250px;
     padding: 10px 25px 25px 25px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 24px;
@@ -119,4 +117,56 @@ button:hover {
     height: auto;
     margin-left: 100px;
     /* space between form and image */
+}
+
+@media (max-width: 1000px) {
+    .wrapper {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        margin: 50px;
+    }
+
+    .side-image {
+        margin-left: 0;
+        margin: 20px 0 0 0;
+        width: 80%;
+        max-width: 300px;
+    }
+
+    .container {
+        margin-left: 0;
+        margin: 20px;
+        width: 100%;
+        max-width: 400px;
+    }
+
+}
+
+@media (max-width: 600px) {
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .wrapper {
+        order: 2;  /* Place wrapper below container */
+        width: 100%;
+        max-width: 300px;
+        margin: 20px 0;
+    }
+
+    .container {
+        order: 1;  /* Keep container above wrapper */
+        width: 100%;
+        max-width: 350px;
+        padding: 20px;
+    }
+
+    /* Optional: adjust image size */
+    .side-image {
+        width: 100%;
+        max-width: 250px;
+    }
 }
