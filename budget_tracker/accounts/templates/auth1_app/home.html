@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,7 +30,7 @@
 
     <div class="container">
         <p>Welcome, <strong>{{ request.user.first_name }} {{ request.user.last_name }}!</strong></p>
-        <p class="balance">Total Balance: ₱{{ total_balance|floatformat:2 }}</p> 
+        <p>Total Balance: ₱{{ total_balance|floatformat:2|intcomma }}</p> 
     </div>
 
 
@@ -39,7 +40,7 @@
 
     <!-- Transactions Section -->
    <div class="transactions-header">
-        <h2>Your Transactions</h2>
+        <h2>Recent Transactions</h2>
         <button id="openModalBtn">Add Transaction</button>
     </div>
 
@@ -58,7 +59,7 @@
                 </td>
                 <td class="{% if transaction.type == 'income' %}income{% else %}expense{% endif %}">
                     {% if transaction.type == 'income' %}+ {% else %}- {% endif %}
-                    {{ transaction.amount }}
+                    {{ transaction.amount|floatformat:2|intcomma }}
                 </td>
             </tr>
             {% empty %}
@@ -68,6 +69,10 @@
             {% endfor %}
         </tbody>
     </table>
+
+    {% if transactions %}
+        <a href="">See all transactions</a>
+    {% endif %}
 
     <div id="transactionModal" class="modal-overlay">
         <div class="modal-content">

@@ -62,15 +62,18 @@ def logout_view(request):
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def home_view(request):
-    transactions = Transaction.objects.filter(user=request.user).order_by('-date')
+    full_transactions = Transaction.objects.filter(user=request.user).order_by('-date')
     
-    income = transactions.filter(type='income').aggregate(total_income=Sum('amount'))['total_income'] or 0
-    expense = transactions.filter(type='expense').aggregate(total_expense=Sum('amount'))['total_expense'] or 0
+    income = full_transactions.filter(type='income').aggregate(total_income=Sum('amount'))['total_income'] or 0
+    expense = full_transactions.filter(type='expense').aggregate(total_expenses=Sum('amount'))['total_expenses'] or 0
+
     total_balance = income - expense
+    
+    recent_transactions = full_transactions[:5]
     
     categories = Category.objects.all()
     context = {
-        'transactions': transactions,
+        'transactions': recent_transactions,
         'total_balance': total_balance,
         'categories': categories,
         
@@ -91,6 +94,7 @@ def add_transaction(request):
     if request.method == "POST":
         Transaction.objects.create(
             user=request.user,
+            name=request.POST.get("name"),
             type=request.POST.get("type"),
             category=Category.objects.get(id=request.POST.get("category")),
             amount=request.POST.get("amount"),
