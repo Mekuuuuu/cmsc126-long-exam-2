@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_control
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.contrib.auth.models import User
@@ -32,7 +33,12 @@ def register_view(request):
         form = RegisterForm()
     return render(request, 'accounts/register.html', {'form': form})
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def login_view(request):
+    
+    if request.user.is_authenticated:
+        return redirect('home')  # already logged in, go to home
+    
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -53,6 +59,7 @@ def logout_view(request):
         return redirect('home')
 
 # Home View
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def home_view(request):
     transactions = Transaction.objects.filter(user=request.user).order_by('-date')
