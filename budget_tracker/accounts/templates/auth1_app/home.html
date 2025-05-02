@@ -39,7 +39,7 @@
 
 
     <div class="transactions-header">
-        <h2>Your Transactions</h2>
+        <h2>Recent Transactions</h2>
         <button id="openModalBtn">Add Transaction</button>
     </div>
 
@@ -68,6 +68,9 @@
             {% endfor %}
         </tbody>
     </table>
+    {% if transactions %}
+        <a href="">See all transactions</a>
+    {% endif %}
 </body>
 
 <div id="transactionModal" class="modal-overlay">
