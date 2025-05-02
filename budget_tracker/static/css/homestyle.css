@@ -9,8 +9,6 @@ body {
     background-size: cover;
     color: #C0E4CD;
     box-sizing: border-box;
-
-
     height: 100vh;
 }
 
@@ -191,7 +189,7 @@ tbody td {
     width: 100%;
     padding: 8px;
     margin-top: 4px;
-    border: 1px solid #ccc;
+    border: 2px solid #182A1B;
     border-radius: 6px;
     font-family: inherit;
 }
@@ -287,7 +285,7 @@ tbody td {
     border-radius: 16px;
     position: relative;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    color: #C0E4CD;
+    color: #c1e4c0;
     border: 1px solid #2BB32A;
 }
 
@@ -310,45 +308,59 @@ tbody td {
     color: #ADB2B1;
     height: 40px;
     box-sizing: border-box;
-    box-shadow: 0 0 0 2px #2BB32A;
+    box-shadow: 0 0 0 1px #2BB32A;
 }
-/* Radio Buttons */
+/* Radio Group Wrapper */
 .radio-group {
     display: flex;
     gap: 20px;
     margin-bottom: 15px;
 }
 
+/* Each Radio Option Container */
 .radio-option {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     cursor: pointer;
     font-weight: 500;
     color: #C0E4CD;
 }
 
+/* Hide default radio style */
 .radio-option input[type="radio"] {
     appearance: none;
     -webkit-appearance: none;
-    width: 24px;
-    height: 24px;
-    border: 2px solid #2BB32A;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #2BB32A;
     border-radius: 50%;
     background-color: #0A120D;
     position: relative;
     cursor: pointer;
+    display: inline-block;
+    box-shadow: 0 0 0 1px rgba(43, 179, 42, 0.6);
+    outline: none;
 }
 
+/* Checked State Circle */
 .radio-option input[type="radio"]:checked::before {
     content: "";
     position: absolute;
-    top: 5px;
-    left: 5px;
-    width: 10px;
-    height: 10px;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
     background-color: #2BB32A;
     border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+.radio-option input[type="radio"]:hover,
+.radio-option input[type="radio"]:focus {
+    box-shadow: 0 0 0 1px rgba(43, 179, 42, 0.6);
+    outline: none;
 }
 
 /* Form Buttons */
