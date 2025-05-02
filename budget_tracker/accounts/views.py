@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from .forms import RegisterForm, LoginForm
 from transactions.models import Transaction, Category
 from django.db.models import Sum
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 def register_view(request):
     if request.method == "POST":
@@ -101,3 +103,18 @@ def add_transaction(request):
             description=request.POST.get("description")
         )
     return redirect('home')
+
+@csrf_exempt
+@login_required
+def add_category(request):
+    if request.method == 'POST':
+        category_name = request.POST.get('name')
+        category_type = request.POST.get('type')
+        new_category = Category.objects.create(name=category_name, type=category_type)
+        # Return the new category ID and name as JSON
+        return JsonResponse({
+            'category_id': new_category.id,
+            'category_name': new_category.name
+        })
+    
+    return JsonResponse({'error': 'Invalid request'}, status=400)
