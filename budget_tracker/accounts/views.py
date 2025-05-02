@@ -6,6 +6,7 @@ from django.views import View
 from django.contrib.auth.models import User
 from .forms import RegisterForm, LoginForm
 from transactions.models import Transaction, Category
+from django.db.models import Sum
 
 def register_view(request):
     if request.method == "POST":
@@ -55,9 +56,15 @@ def logout_view(request):
 @login_required
 def home_view(request):
     transactions = Transaction.objects.filter(user=request.user).order_by('-date')
+    
+    income = transactions.filter(type='income').aggregate(total_income=Sum('amount'))['total_income'] or 0
+    expense = transactions.filter(type='expense').aggregate(total_expense=Sum('amount'))['total_expense'] or 0
+    total_balance = income - expense
+    
     categories = Category.objects.all()
     context = {
         'transactions': transactions,
+        'total_balance': total_balance,
         'categories': categories,
         
     }

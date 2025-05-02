@@ -29,6 +29,7 @@
 
     <div class="container">
         <p>Welcome, <strong>{{ request.user.first_name }} {{ request.user.last_name }}!</strong></p>
+        <p class="balance">Total Balance: ₱{{ total_balance|floatformat:2 }}</p> 
     </div>
 
 
