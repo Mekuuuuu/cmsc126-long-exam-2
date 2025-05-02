@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 class Category(models.Model):
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     CATEGORY_TYPE_CHOICES = [
         ('income', 'Income'),
         ('expense', 'Expense'),
