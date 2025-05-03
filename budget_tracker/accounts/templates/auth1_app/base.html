@@ -1,13 +1,15 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}My App{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/homestyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/basestyle.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700&display=swap">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
     <nav class="navbar">
         <div class="nav-left" style="display: flex; align-items: center; gap: 10px;">
@@ -32,10 +34,10 @@
                     <form action="/export-csv/" method="get">
                         <label for="start" class="text-sm">From:</label>
                         <input type="date" name="start_date" required>
-            
+
                         <label for="end" class="text-sm">To:</label>
                         <input type="date" name="end_date" required>
-            
+
                         <button type="submit">Export Custom</button>
                     </form>
                 </div>
@@ -50,7 +52,7 @@
 </body>
 
 <script>
-    document.getElementById('reportDropdownButton').addEventListener('click', function() {
+    document.getElementById('reportDropdownButton').addEventListener('click', function () {
         // Add logic for the dropdown button click event
         console.log('Report dropdown button clicked!');
     });
@@ -58,9 +60,10 @@
     // You can also target elements using the more specific class
     const dropdownItems = document.querySelectorAll('.dropdown-item-report');
     dropdownItems.forEach(item => {
-        item.addEventListener('click', function() {
+        item.addEventListener('click', function () {
             console.log('Item clicked:', item.textContent);
         });
     });
 </script>
+
 </html>

@@ -1,0 +1,131 @@
+/* Form Buttons */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.form-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    height: 50px;
+    font-weight: bold;
+    font-size: 15px;
+    color: white;
+}
+
+.form-actions button[type="submit"] {
+    background: linear-gradient(to right, #0D1C13, #1B2D1D);
+    border: 1px solid #2BB32A;
+
+}
+
+.form-actions button[type="submit"]:hover {
+    background-color: #248824;
+}
+
+.form-actions button[type="button"] {
+    background: transparent;
+    border: 1px solid #5A5F5D;
+    color: #ADB2B1;
+}
+
+.form-actions button[type="button"]:hover {
+    background-color: #2A2F2D;
+    /* dark subtle gray */
+    color: white;
+    border-color: #7F8785;
+    /* slightly lighter gray on hover */
+}
+
+/* Styles for the Report Dropdown */
+.dropdown-report {
+    position: relative;
+    display: inline-block;
+    margin-top: 1rem;
+}
+
+.dropdown-button-report {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-button-report:hover {
+    background-color: #0056b3;
+}
+
+/* Dropdown Menu Styles */
+.dropdown-menu-report {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: 200px;
+    z-index: 10;
+}
+
+.dropdown-menu-report a {
+    display: block;
+    padding: 8px 16px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.dropdown-menu-report a:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+}
+
+/* Show the dropdown when hovering over the button */
+.dropdown-report:hover .dropdown-menu-report {
+    display: block;
+}
+
+/* Styles for the dropdown form */
+.dropdown-menu-report form {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-menu-report input[type="date"] {
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.dropdown-menu-report button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.dropdown-menu-report button:hover {
+    background-color: #0056b3;
+}
+
+/* Additional Styling for Links and Divider */
+.dropdown-divider {
+    height: 1px;
+    background-color: #ddd;
+    margin: 8px 0;
+}
