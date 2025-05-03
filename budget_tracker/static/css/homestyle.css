@@ -290,6 +290,7 @@ form {
     justify-content: space-between;
     align-items: center;
     margin: 20px 0 0;
+    width: 100%;
 }
 
 .profile-btn {

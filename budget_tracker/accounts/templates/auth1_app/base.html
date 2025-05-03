@@ -7,6 +7,7 @@
     <title>{% block title %}My App{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/basestyle.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700&display=swap">
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -19,8 +20,8 @@
         <div class="nav-center">
             <a href="{% url 'home' %}">Dashboard</a>
             <a href="{% url 'transactions' %}">Transactions</a>
-            <a href="#">Categories</a>
-            <a href="#">Budget</a>
+            <!--<a href="#">Categories</a>-->
+            <!--<a href="#">Budget</a>-->
             <!-- Dropdown for Export -->
             <div class="dropdown-report">
                 <a href="#" class="report-link" id="reportDropdownButton">Report</a>
@@ -45,7 +46,7 @@
             <form action="{% url 'logout' %}" method="post" style="display: inline;">
                 {% csrf_token %}
                 <button type="submit"
-                    style="background: none; border: none; color: inherit; cursor: pointer; padding: 0; font: inherit;">Logout</button>
+                    style="background: none; border: none; color: inherit; cursor: pointer; padding: 0; font: inherit;"><strong>Logout</strong></button>
             </form>
         </div>
     </nav>

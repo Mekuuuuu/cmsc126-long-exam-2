@@ -11,7 +11,7 @@ SimpliFi is a lightweight and user-friendly budget tracking web application desi
 - 🗂️ **Category-Based Tracking** – Organize expenses by category (e.g., food, transport, utilities).
 - 📅 **Date Filtering** – Generate reports based on date range.
 - 🧾 **Report Generation** – Download financial summaries.
-- 📱 **Responsive Design** – Works on desktop, tablet, and mobile.
+- 📱 **Responsive Design** – Confident that it works fine on Desktop, on mobile, not so much.
 
 ---
 
@@ -19,7 +19,7 @@ SimpliFi is a lightweight and user-friendly budget tracking web application desi
 
 - **Frontend**: HTML, CSS, JavaScript
 - **Backend**: Django (Python)
-- **Database**: MySQL
+- **Database**: SQLite
 - **Styling**: Vanilla CSS
 - **Version Control**: Git & GitHub
 
@@ -138,6 +138,7 @@ Here’s a step-by-step overview of how users interact with SimpliFi:
 
 ### 🏠 Home Screen (Dashboard)
 After logging in, users are directed to the **Dashboard**, which provides an overview of their financial activity.
+Note: The Categories and Budget key sections were removed in the latest update, but the screenshots still show them due to time constraints. We apologize for not being able to update the screenshots before submission.
 
 ![Alt Text](readmeResources/4.png)
 
@@ -145,8 +146,6 @@ After logging in, users are directed to the **Dashboard**, which provides an ove
 - **Navigation Buttons**:  
   - Dashboard  
   - Transactions  
-  - Categories  
-  - Budget  
   - Report  
   - Logout  
 
@@ -170,7 +169,22 @@ After logging in, users are directed to the **Dashboard**, which provides an ove
       ![Alt Text](readmeResources/9.png)
     - Disable the 'Income' toggle in the barchart's legend 
       ![Alt Text](readmeResources/8.png)
-        
+
+- **Edit Transaction**
+  - Click on the transaction on the table and a modal will show.
+      ![Alt Text](readmeResources/11.png)
+  - Click 'Edit' to edit transaction.
+      ![Alt Text](readmeResources/12.png)
+  - The edit is reflected on the table.
+      ![Alt Text](readmeResources/13.png)
+- **Delete Transaction**
+  -  Click on the transaction on the table and a modal will show.
+      ![Alt Text](readmeResources/11.png)
+  -  Click 'Delete' and a confirmation modal will show. Click 'Yes'.
+      ![Alt Text](readmeResources/14.png)
+  - The transaction is now deleted, thus updates the total balance, the chart, and the table.
+      ![Alt Text](readmeResources/15.png)
+    
 - **Recent Transactions Table**:  
   - Displays the most recent transactions in a table format.  
   - A **"See All Transactions"** link is available at the bottom, redirecting users to the full **Transactions** page.

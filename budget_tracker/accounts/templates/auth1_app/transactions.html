@@ -15,12 +15,29 @@
     <link rel="stylesheet" href="{% static 'css/transactionsstyle.css' %}">
     <link rel="stylesheet" href="{% static 'css/homestyle.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{% static 'js/home.js' %}"></script>
 </head>
 <body>
     <div class="container">
         <h2>Transactions</h2>
-        <h2>Pie Chart Here</h2>
+        
+        <!-- Debug Information -->
+        <div style="display: none;">
+            <p>Filter Type: {{ filter_type }}</p>
+            <p>Selected Category: {{ selected_category }}</p>
+            <p>Income Total: {{ income_total }}</p>
+            <p>Expense Total: {{ expense_total }}</p>
+            <p>Category Totals: {{ category_totals }}</p>
+        </div>
+        
+        <!-- Pie Chart Section -->
+        <div class="chart-container" style="position: relative; height:400px; width:100%; margin-bottom: 2em;">
+            <canvas id="transactionsPieChart"></canvas>
+            <div id="noDataMessage" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #C0E4CD;">
+                No data available to display
+            </div>
+        </div>
 
         <!-- Filter Toggle -->
         <div class="filter-bar">
@@ -95,7 +112,154 @@
         {% include "partials/home/transaction_detail_modal.html" %}
         {% include "partials/home/edit_transaction_modal.html" %}
         {% include "partials/home/delete_transaction_confirmation_modal.html" %}
+
+        <!-- Pass data to JavaScript -->
+        {{ category_totals|json_script:"category-totals" }}
+        {{ income_total|json_script:"income-total" }}
+        {{ expense_total|json_script:"expense-total" }}
+        {{ selected_category|json_script:"selected-category" }}
+        {{ filter_type|json_script:"filter-type" }}
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chartData = {
+                categoryTotals: JSON.parse(document.getElementById('category-totals').textContent),
+                incomeTotal: JSON.parse(document.getElementById('income-total').textContent),
+                expenseTotal: JSON.parse(document.getElementById('expense-total').textContent),
+                selectedCategory: JSON.parse(document.getElementById('selected-category').textContent),
+                filterType: JSON.parse(document.getElementById('filter-type').textContent)
+            };
+            console.log('Initial Chart Data:', chartData);
+            
+            const ctx = document.getElementById('transactionsPieChart').getContext('2d');
+            let chart;
+
+            function updateChart() {
+                if (chart) {
+                    chart.destroy();
+                }
+
+                const noDataMessage = document.getElementById('noDataMessage');
+                const canvas = document.getElementById('transactionsPieChart');
+
+                // Don't show chart if 'all' is selected and a category is chosen
+                if (chartData.filterType === 'all' && chartData.selectedCategory !== 'all') {
+                    canvas.style.display = 'none';
+                    noDataMessage.style.display = 'block';
+                    return;
+                }
+
+                let data, labels, colors;
+
+                if (chartData.filterType === 'all') {
+                    // Show income vs expense
+                    data = [chartData.incomeTotal, chartData.expenseTotal];
+                    labels = ['Income', 'Expense'];
+                    colors = ['#2BB32A', '#E53935'];
+                } else {
+                    // Show categories for selected type (income or expense)
+                    const categories = chartData.categoryTotals[chartData.filterType] || [];
+                    console.log('Categories for type:', chartData.filterType, categories);
+                    
+                    data = categories.map(cat => cat.total);
+                    labels = categories.map(cat => cat.name);
+                    
+                    // Define color palettes for income and expense categories
+                    const incomeColors = [
+                        '#2BB32A', // Primary green
+                        '#4CAF50', // Light green
+                        '#81C784', // Lighter green
+                        '#A5D6A7', // Very light green
+                        '#C8E6C9', // Lightest green
+                        '#E8F5E9'  // Pale green
+                    ];
+                    
+                    const expenseColors = [
+                        '#E53935', // Primary red
+                        '#EF5350', // Light red
+                        '#E57373', // Lighter red
+                        '#EF9A9A', // Very light red
+                        '#FFCDD2', // Lightest red
+                        '#FFEBEE'  // Pale red
+                    ];
+                    
+                    // Generate colors for categories
+                    colors = labels.map((_, index) => {
+                        if (chartData.selectedCategory !== 'all' && 
+                            categories[index].id === chartData.selectedCategory) {
+                            return chartData.filterType === 'income' ? '#2BB32A' : '#E53935';
+                        } else if (chartData.selectedCategory !== 'all') {
+                            return chartData.filterType === 'income' ? 'rgba(43, 179, 42, 0.3)' : 'rgba(229, 57, 53, 0.3)';
+                        } else {
+                            // Use different colors for each category
+                            const colorPalette = chartData.filterType === 'income' ? incomeColors : expenseColors;
+                            return colorPalette[index % colorPalette.length];
+                        }
+                    });
+                }
+
+                // Don't create chart if there's no data
+                if (data.length === 0 || data.every(value => value === 0)) {
+                    console.log('No data to display');
+                    canvas.style.display = 'none';
+                    noDataMessage.style.display = 'block';
+                    return;
+                }
+
+                // Show the chart
+                canvas.style.display = 'block';
+                noDataMessage.style.display = 'none';
+
+                chart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: colors,
+                            borderColor: '#1A1E1C',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    color: '#C0E4CD',
+                                    font: {
+                                        family: 'Geist',
+                                        size: 14
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: '#182A1B',
+                                titleColor: '#C0E4CD',
+                                bodyColor: '#C0E4CD',
+                                borderColor: '#2BB32A',
+                                borderWidth: 1,
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw || 0;
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = Math.round((value / total) * 100);
+                                        return `${label}: ₱${value.toLocaleString()} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            updateChart();
+        });
+    </script>
 </body>
 {% endblock %}
 

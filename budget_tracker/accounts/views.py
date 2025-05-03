@@ -21,6 +21,7 @@ from django.db.models.functions import TruncDay, TruncMonth, TruncWeek, TruncYea
 from datetime import datetime
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
+from django.db import models
 
 def register_view(request):
     if request.method == "POST":
@@ -225,7 +226,50 @@ class TransactionsView(LoginRequiredMixin, View):
         
         paginator = Paginator(transactions, 20)
         page_obj = paginator.get_page(page_number)
+
+        # Calculate totals for pie chart
+        total_income = Transaction.objects.filter(user=request.user, type='income').aggregate(total=models.Sum('amount'))['total'] or 0
+        total_expense = Transaction.objects.filter(user=request.user, type='expense').aggregate(total=models.Sum('amount'))['total'] or 0
         
+        # Calculate category totals
+        category_totals = {
+            'income': [],
+            'expense': []
+        }
+        
+        # Get all categories for the user
+        all_categories = Category.objects.filter(user=request.user)
+        
+        # Calculate totals for each category
+        for category in all_categories:
+            # Calculate income for this category
+            category_income = Transaction.objects.filter(
+                user=request.user,
+                type='income',
+                category=category
+            ).aggregate(total=models.Sum('amount'))['total'] or 0
+            
+            # Calculate expense for this category
+            category_expense = Transaction.objects.filter(
+                user=request.user,
+                type='expense',
+                category=category
+            ).aggregate(total=models.Sum('amount'))['total'] or 0
+            
+            # Add to category_totals if there are transactions
+            if category_income > 0:
+                category_totals['income'].append({
+                    'id': str(category.id),
+                    'name': category.name,
+                    'total': float(category_income)
+                })
+            
+            if category_expense > 0:
+                category_totals['expense'].append({
+                    'id': str(category.id),
+                    'name': category.name,
+                    'total': float(category_expense)
+                })
 
         return render(request, 'auth1_app/transactions.html', {
             'transactions': page_obj.object_list,
@@ -233,6 +277,9 @@ class TransactionsView(LoginRequiredMixin, View):
             'categories': categories,
             'filter_type': filter_type,
             'selected_category': category_id,
+            'income_total': float(total_income),
+            'expense_total': float(total_expense),
+            'category_totals': category_totals
         })
         
         
@@ -347,3 +394,93 @@ def export_transactions_csv(request):
         ])
 
     return response
+
+def transactions(request):
+    # Get filter parameters
+    filter_type = request.GET.get('type', 'all')
+    selected_category = request.GET.get('category', 'all')
+    
+    # Get all transactions
+    transactions = Transaction.objects.filter(user=request.user).order_by('-date')
+    
+    # Apply filters
+    if filter_type != 'all':
+        transactions = transactions.filter(type=filter_type)
+    
+    if selected_category != 'all':
+        transactions = transactions.filter(category_id=selected_category)
+    
+    # Get categories for the dropdown
+    categories = Category.objects.filter(user=request.user)
+    
+    # Calculate totals for pie chart
+    total_income = transactions.filter(type='income').aggregate(total=models.Sum('amount'))['total'] or 0
+    total_expense = transactions.filter(type='expense').aggregate(total=models.Sum('amount'))['total'] or 0
+    
+    # Calculate category totals
+    category_totals = {
+        'income': [],
+        'expense': []
+    }
+    
+    # Get all categories for the user
+    all_categories = Category.objects.filter(user=request.user)
+    
+    # Calculate totals for each category
+    for category in all_categories:
+        # Calculate income for this category
+        category_income = Transaction.objects.filter(
+            user=request.user,
+            type='income',
+            category=category
+        ).aggregate(total=models.Sum('amount'))['total'] or 0
+        
+        # Calculate expense for this category
+        category_expense = Transaction.objects.filter(
+            user=request.user,
+            type='expense',
+            category=category
+        ).aggregate(total=models.Sum('amount'))['total'] or 0
+        
+        # Add to category_totals if there are transactions
+        if category_income > 0:
+            category_totals['income'].append({
+                'id': str(category.id),  # Convert to string for JSON serialization
+                'name': category.name,
+                'total': float(category_income)
+            })
+        
+        if category_expense > 0:
+            category_totals['expense'].append({
+                'id': str(category.id),  # Convert to string for JSON serialization
+                'name': category.name,
+                'total': float(category_expense)
+            })
+    
+    # Ensure category_totals is properly structured
+    if not category_totals['income']:
+        category_totals['income'] = []
+    if not category_totals['expense']:
+        category_totals['expense'] = []
+    
+    # Pagination
+    paginator = Paginator(transactions, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'transactions': page_obj,
+        'categories': categories,
+        'filter_type': filter_type,
+        'selected_category': selected_category,
+        'category_totals': category_totals,
+        'income_total': float(total_income),
+        'expense_total': float(total_expense),
+    }
+    
+    # Debug logging
+    print("Debug - Category Totals:", category_totals)
+    print("Debug - Income Total:", total_income)
+    print("Debug - Expense Total:", total_expense)
+    
+    return render(request, 'auth1_app/transactions.html', context)
