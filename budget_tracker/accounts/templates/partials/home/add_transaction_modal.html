@@ -1,0 +1,45 @@
+<div id="transactionModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>Add New Transaction</h3>
+        <form method="POST" action="{% url 'add_transaction' %}">
+            {% csrf_token %}
+
+            <label>Name:</label>
+            <input type="text" name="name" required>
+
+            <label>Type:</label>
+            <div class="radio-group">
+                <div class="radio-option">
+                    <input type="radio" id="income" name="type" value="income" required checked>
+                    <label for="income">Income</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="expense" name="type" value="expense">
+                    <label for="expense">Expense</label>
+                </div>
+            </div>
+
+            <label>Date and Time:</label>
+            <input type="datetime-local" name="datetime" id="datetimeInput" required>
+
+            <label>Amount:</label>
+            <input type="number" name="amount" step="0.01" required>
+
+            <label>Category:</label>
+            <select name="category" id="categorySelect" required>
+                {% for cat in categories %}
+                <option value="{{ cat.id }}" data-type="{{ cat.type }}">{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="button" id="addCategoryBtn">Add New Category</button>
+
+            <label>Description:</label>
+            <textarea name="description" rows="2"></textarea>
+
+            <div class="form-actions">
+                <button type="submit">Save</button>
+                <button type="button" onclick="closeModal()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
