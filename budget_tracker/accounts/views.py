@@ -82,7 +82,7 @@ def home_view(request):
     expense_data = defaultdict(float)
 
     for txn in full_transactions:
-        date_str = txn.datetime.strftime('%Y-%m-%d')
+        date_str = txn.date.strftime('%Y-%m-%d')
         dates.add(date_str)
         if txn.type == 'income':
             income_data[date_str] += txn.amount

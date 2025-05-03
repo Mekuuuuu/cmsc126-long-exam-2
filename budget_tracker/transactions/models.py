@@ -26,8 +26,7 @@ class Transaction(models.Model):
     name = models.CharField(max_length=100, blank=True)
     type = models.CharField(max_length=7, choices=TRANSACTION_TYPE_CHOICES)  # income or expense (user manually selects first)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    type = models.CharField(max_length=7, choices=TRANSACTION_TYPE_CHOICES)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.FloatField()
     date = models.DateTimeField(default=timezone.now)
     description = models.CharField(max_length=255, blank=True)
     
