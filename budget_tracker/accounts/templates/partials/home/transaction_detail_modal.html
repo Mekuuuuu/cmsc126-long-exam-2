@@ -1,0 +1,16 @@
+{% load static %}
+<script src="{% static 'home.js' %}"></script>
+<div id="transactionDetailModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        <h3>Transaction Details</h3>
+        <p><strong>Name:</strong> <span id="modalTransactionName"></span></p>
+        <p><strong>Amount:</strong> ₱<span id="modalTransactionAmount"></span></p>
+        <p><strong>Category:</strong> <span id="modalTransactionCategory"></span></p>
+        <p><strong>Date:</strong> <span id="modalTransactionDate"></span></p>
+        <p><strong>Description:</strong> <span id="modalTransactionDescription"></span></p>
+    
+        <button type="button" id="editTransactionBtn">Edit</button>
+        <button type="button" id="deleteTransactionBtn">Delete</button>
+        <button type="button" class="close-modal">Close</button>
+    </div>
+</div>

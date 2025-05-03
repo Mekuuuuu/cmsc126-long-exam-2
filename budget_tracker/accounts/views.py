@@ -20,6 +20,7 @@ from django.utils.timezone import now
 from django.db.models.functions import TruncDay, TruncMonth, TruncWeek, TruncYear
 from datetime import datetime
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
 
 def register_view(request):
     if request.method == "POST":
@@ -253,6 +254,30 @@ def add_transaction(request):
             date=transaction_date,
         )
     return redirect('home')
+
+
+@login_required
+def edit_transaction(request, transaction_id):
+    transaction = get_object_or_404(Transaction, id=transaction_id, user=request.user)
+
+    if request.method == "POST":
+        transaction.name = request.POST.get("name")
+        transaction.amount = request.POST.get("amount")
+        transaction.category = Category.objects.get(id=request.POST.get("category"))
+        transaction.description = request.POST.get("description")
+        transaction.save()
+        return redirect('home')
+
+    categories = Category.objects.filter(type=transaction.type)
+    return redirect('home')
+
+@login_required
+def delete_transaction(request, transaction_id):
+    transaction = get_object_or_404(Transaction, id=transaction_id, user=request.user)
+    if request.method == "POST":
+        transaction.delete()
+        return redirect('transactions')  # Or 'home'
+    return render(request, 'auth1_app/delete_transaction.html', {'transaction': transaction})
 
 @csrf_exempt
 @login_required

@@ -27,6 +27,8 @@
         {% include "partials/home/recent_transactions.html" %}
         {% include "partials/home/add_transaction_modal.html" %}
         {% include "partials/home/add_category_modal.html" %}
+        {% include "partials/home/transaction_detail_modal.html" %}
+        {% include 'partials/home/edit_transaction_modal.html' %}
 
         {{ labels|json_script:"labels" }}
         {{ income_totals|json_script:"income_totals" }}

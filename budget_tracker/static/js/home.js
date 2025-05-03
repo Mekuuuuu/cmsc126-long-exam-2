@@ -66,6 +66,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const modal = document.getElementById("transactionModal");
     const categoryModal = document.getElementById("categoryModal");
+    const editTransactionModal = document.getElementById('editTransactionModal')
+    const deleteTransactionModal = document.getElementById('deleteTransactionModal')
+    const transactionDetailModal = document.getElementById("transactionDetailModal")
     const datetimeInput = document.getElementById("datetimeInput");
     const typeRadios = document.querySelectorAll('input[name="type"]');
     const categorySelect = document.getElementById('categorySelect');
@@ -80,15 +83,74 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     function closeModal() {
-        modal.style.display = "none";
+        const modal = document.getElementById("transactionModal");
+        if (modal) {
+            modal.style.display = "none";
+        }
     }
 
+    function closeCategoryModal() {
+        const modal = document.getElementById("categoryModal");
+        if (modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    function closeTransactionModal() {
+        const modal = document.getElementById("transactionDetailModal");
+        if (modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    function closeEditTransactionModal() {
+        const modal = document.getElementById("editTransactionModal");
+        if (modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    function closeDeleteTransactionModal() {
+        const modal = document.getElementById("deleteTransactionModal");
+        if (modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Set up close button handlers
+    document.querySelectorAll('.close-modal').forEach(button => {
+        button.addEventListener('click', function() {
+            const modal = this.closest('.modal-overlay');
+            if (modal.id === 'transactionModal') {
+                closeModal();
+            } else if (modal.id === 'categoryModal') {
+                closeCategoryModal();
+            } else if (modal.id === 'transactionDetailModal') {
+                closeTransactionModal();
+            } else if (modal.id === 'editTransactionModal') {
+                closeEditTransactionModal();
+            } else if (modal.id === 'deleteTransactionModal') {
+                closeDeleteTransactionModal();
+            }
+        });
+    });
+
+    // Close modals when clicking outside
     window.onclick = function (event) {
         if (event.target === modal) {
             closeModal();
         }
         if (event.target === categoryModal) {
             closeCategoryModal();
+        }
+        if (event.target === transactionDetailModal) {
+            closeTransactionModal();
+        }
+        if (event.target === editTransactionModal) {
+            closeEditTransactionModal();
+        }
+        if (event.target === deleteTransactionModal) {
+            closeDeleteTransactionModal();
         }
     };
 
@@ -134,10 +196,6 @@ document.addEventListener("DOMContentLoaded", () => {
         categoryModal.style.display = "block";
     };
 
-    function closeCategoryModal() {
-        categoryModal.style.display = "none";
-    }
-
     function filterCategories(selectedType) {
         let foundValidOption = false;
 
@@ -175,5 +233,80 @@ document.addEventListener("DOMContentLoaded", () => {
         if (profileBtn && dropdown && !profileBtn.contains(e.target) && !dropdown.contains(e.target)) {
             dropdown.style.display = 'none';
         }
+    });
+
+    // Add event listeners to all transaction rows
+    document.querySelectorAll('.transaction-row').forEach(row => {
+        row.addEventListener('click', function() {
+            // Retrieve the transaction ID and other data from the clicked row
+            const transactionId = this.dataset.id;
+            const name = this.dataset.name;
+            const amount = this.dataset.amount;
+            const category = this.dataset.category;
+            const categoryId = this.dataset.categoryId;
+            const date = this.dataset.date;
+            const description = this.dataset.description;
+
+            // Store the transaction data in the detail modal
+            const detailModal = document.getElementById('transactionDetailModal');
+            detailModal.dataset.transactionId = transactionId;
+            detailModal.dataset.name = name;
+            detailModal.dataset.amount = amount;
+            detailModal.dataset.categoryId = categoryId;
+            detailModal.dataset.description = description;
+
+            // Fill modal content with transaction details
+            document.getElementById('modalTransactionName').innerText = name;
+            document.getElementById('modalTransactionAmount').innerText = amount;
+            document.getElementById('modalTransactionCategory').innerText = category;
+            document.getElementById('modalTransactionDate').innerText = date;
+            document.getElementById('modalTransactionDescription').innerText = description;
+
+            // Show the modal
+            detailModal.style.display = 'block';
+        });
+    });
+
+    document.getElementById("editTransactionBtn").addEventListener('click', function() {
+        const detailModal = document.getElementById('transactionDetailModal');
+        const form = document.getElementById('editTransactionForm');
+        form.action = `/edit-transaction/${detailModal.dataset.transactionId}/`;
+        form.querySelector('#editTransactionId').value = detailModal.dataset.transactionId;
+        form.querySelector('#name').value = detailModal.dataset.name;
+        form.querySelector('#amount').value = detailModal.dataset.amount;
+        form.querySelector('#category').value = detailModal.dataset.categoryId;
+        form.querySelector('#description').value = detailModal.dataset.description;
+        document.getElementById('editTransactionModal').style.display = 'block';
+    });
+
+    // Add click handler for save button in edit transaction modal
+    const saveButton = document.querySelector('#editTransactionModal .save-btn');
+    if (saveButton) {
+        saveButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const form = document.getElementById('editTransactionForm');
+            const formData = new FormData(form);
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    }
+
+    document.getElementById("deleteTransactionBtn").addEventListener('click', function() {
+        const detailModal = document.getElementById('transactionDetailModal');
+        window.location.href = `/delete-transaction/${detailModal.dataset.transactionId}/`;
     });
 });

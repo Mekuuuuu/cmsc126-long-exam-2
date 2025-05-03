@@ -12,7 +12,14 @@
         </thead>
         <tbody>
             {% for transaction in transactions %}
-            <tr>
+            <tr class="transaction-row"
+                data-id="{{ transaction.id }}"
+                data-name="{{ transaction.name }}"
+                data-amount="{{ transaction.amount }}"
+                data-category="{{ transaction.category.name }}"
+                data-category-id="{{ transaction.category.id }}"
+                data-date="{{ transaction.date }}"
+                data-description="{{ transaction.description|default_if_none:'No description' }}">
                 <td><strong>{{ transaction.name }}</strong> / {{ transaction.category.name }}</td>
                 <td class="{% if transaction.type == 'income' %}income{% else %}expense{% endif %}">
                     {% if transaction.type == 'income' %}+ {% else %}- {% endif %}
