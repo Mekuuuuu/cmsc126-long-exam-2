@@ -12,11 +12,11 @@
     <nav class="navbar">
         <div class="nav-left" style="display: flex; align-items: center; gap: 10px;">
             <img src="/static/images/logo.png" alt="SimpliFi Logo" class="logo-img">
-            <a href="#" class="nav-logo">SimpliFi</a>
+            <a href="{% url 'home' %}" class="nav-logo">SimpliFi</a>
         </div>
         <div class="nav-center">
-            <a href="#">Dashboard</a>
-            <a href="#">Transactions</a>
+            <a href="{% url 'home' %}">Dashboard</a>
+            <a href="{% url 'transactions' %}">Transactions</a>
             <a href="#">Categories</a>
             <a href="#">Budget</a>
             <!-- Dropdown for Export -->
