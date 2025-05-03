@@ -1,13 +1,13 @@
 /* General Reset and Typography */
 body {
     margin: 20px;
-    padding: 0 80px;
+    padding: 0 100px;
     font-family: 'Geist', sans-serif;
     background-color: #1A1E1C;
     background: radial-gradient(circle at top right, rgba(43, 179, 42, 0.2) 0%, transparent 40%), #1A1E1C;
     background-repeat: no-repeat;
     background-size: cover;
-    color: #C0E4CD;
+    color: #fff;
     box-sizing: border-box;
     height: 100vh;
 }
@@ -20,6 +20,71 @@ body {
     margin-top: 20px;
     height: 100%;
     /* padding: 0 40px; */
+}
+
+/* Navbar styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    color: #fff;
+    font-family: 'Segoe UI', sans-serif;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.navbar a {
+    text-decoration: none;
+}
+
+
+.nav-left .nav-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffff;
+}
+
+.nav-center a {
+    margin: 0 1rem;
+    color: #fff;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-center a:hover {
+    color: #2BB32A;
+}
+
+/* Right section (logout) */
+.nav-right a {
+    color: #fff;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-right a:hover {
+    color: #2BB32A;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .nav-center, .nav-right {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .nav-center a, .nav-right a {
+        margin: 0; /* Remove horizontal margins for vertical layout */
+    }
 }
 
 #myChart {
@@ -60,15 +125,18 @@ body {
 }
 
 .filter-dropdown::after {
-    content: '⌄';
+    content: '';
     position: absolute;
     top: 50%;
     right: 14px;
     transform: translateY(-50%);
     pointer-events: none;
-    color: #FFFFFF;
-    font-size: 15px;
-    line-height: 1;
+    width: 10px;
+    height: 10px;
+    background-image: url('/static/images/arrow-down.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     z-index: 2;
 }
 
@@ -79,6 +147,7 @@ body {
 
 .right-table {
     width: 50%;
+    margin-left: 50px;
 }
 
 /* Align the transactions-header content to the right within its section */
@@ -153,28 +222,33 @@ body {
     margin-bottom: 20px;
 }
 
+.button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
 /* Buttons */
 button,
-a {
+.button-link {
     font-family: inherit;
-    background-color: #2BB32A;
-    color: white;
-    padding: 10px 16px;
+    /* background-color: #2BB32A; */
+    color: rgb(255, 255, 255);
+    padding: 10px;
     margin-top: 10px;
     border: none;
     border-radius: 8px;
     text-decoration: none;
     cursor: pointer;
     display: inline-block;
+    font-size: 15px;
 }
 
 button:hover,
-a:hover {
+.button-link:hover {
     background-color: #219021;
 }
 
 h2,
-a,
+.button-link,
 form {
     margin-bottom: 10px;
 }
@@ -311,7 +385,7 @@ tbody td {
 
 .transactions-header h2 {
     margin: 0;
-    color: #C0E4CD;
+    color: #fff;
 }
 
 .transactions-header button {

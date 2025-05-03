@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My App{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/homestyle.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-left" style="display: flex; align-items: center; gap: 10px;">
+            <img src="/static/images/logo.png" alt="SimpliFi Logo" class="logo-img">
+            <a href="#" class="nav-logo">SimpliFi</a>
+        </div>
+        <div class="nav-center">
+            <a href="#">Dashboard</a>
+            <a href="#">Transactions</a>
+            <a href="#">Categories</a>
+            <a href="#">Budget</a>
+            <a href="#">Report</a>
+        </div>
+        <div class="nav-right">
+            <a href="#">Logout</a>
+        </div>
+    </nav>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

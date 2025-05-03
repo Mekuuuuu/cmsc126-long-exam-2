@@ -1,8 +1,15 @@
+{% extends "auth1_app/base.html" %}
 {% load static %}
 {% load humanize %}
+
+
+{% block title %}Home{% endblock %}
+{% block page_title %}Home{% endblock %}
+
 <!DOCTYPE html>
 <html lang="en">
 
+{% block content %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,20 +21,6 @@
 </head>
 
 <body>
-    <div class="top-bar">
-        <h2>Home</h2>
-
-        <div class="profile-dropdown">
-            <button class="profile-btn">Profile ⌄</button>
-            <div class="dropdown-menu">
-                <a href="{% url 'protected' %}">Go To Your Protected Page!</a>
-                <form method="POST" action="{% url 'logout' %}" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit">Logout</button>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <div class="container">
         <p>Welcome, <strong>{{ request.user.first_name }} {{ request.user.last_name }}!</strong></p>
@@ -89,12 +82,12 @@
                             {
                                 label: 'Income',
                                 data: chartData.monthly.income,
-                                backgroundColor: '#007A75'
+                                backgroundColor: '#2BB32A'
                             },
                             {
                                 label: 'Expense',
                                 data: chartData.monthly.expense,
-                                backgroundColor: '#7BBB24'
+                                backgroundColor: '#E53935'
                             }
                         ]
                     },
@@ -103,7 +96,7 @@
                         maintainAspectRatio: false,
                         scales: {
                             x: { stacked: false },
-                            y: { beginAtZero: true }
+                            y: { beginAtZero: true},
                         }
                     }
                 });
@@ -132,7 +125,7 @@
         <div class="right-table">
             <div class="transactions-header">
                 <h2>Recent Transactions</h2>
-                <button id="openModalBtn">Add Transaction</button>
+                <button id="openModalBtn">+ Add Transaction</button>
             </div>
 
             <table>
@@ -162,7 +155,9 @@
             </table>
 
             {% if transactions %}
-            <a href="{% url 'transactions' %}">See all transactions</a>
+            <div class="button-wrapper">
+                <a href="{% url 'transactions' %}" class="button-link">See all transactions</a>
+            </div>
             {% endif %}
         </div>
 
@@ -356,5 +351,5 @@
         });
     </script>
 </body>
-
+{% endblock %}
 </html>
