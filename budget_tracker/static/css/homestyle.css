@@ -160,17 +160,22 @@ body {
     justify-content: space-between;
     width: 100%;
     gap: 16px;
-    padding: 12px;
+    padding: 12px 24px;
 }
 
-
 .container-totalbalance {
-    padding: 12px;
-    border: 2px solid #2BB32A;
+    height: 50px;
+    display: flex;
+    align-items: center; /* Vertically center */
+    justify-content: center; /* Horizontally center (optional) */
+    padding: 20px;
     background: #0A160F;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     white-space: nowrap;
+    border: 2px solid #182A1B;
+    box-shadow: 0 0 0 1px #2BB32A;
+    border-radius: 6px;
+    font-family: inherit;
 }
 
 
@@ -255,7 +260,7 @@ body {
 button,
 .button-link {
     font-family: inherit;
-    /* background-color: #2BB32A; */
+    background-color: #2BB32A;
     color: rgb(255, 255, 255);
     padding: 10px;
     margin-top: 10px;
@@ -284,7 +289,6 @@ form {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 10px;
     margin: 20px 0 0;
 }
 
@@ -417,7 +421,7 @@ tbody td {
     background-color: #2BB32A;
     color: white;
     border: none;
-    /* padding: 10px 20px; */
+    padding: 10px 20px;
     border-radius: 8px;
     cursor: pointer;
     font-size: 15px;
@@ -480,6 +484,26 @@ tbody tr:last-child td {
     overflow: auto;
 }
 
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-actions button {
+    width: 70px;
+}
+
+.left-actions button,
+.right-actions button {
+    margin-right: 0.5rem;
+}
+
+.right-actions button {
+    margin-right: 0; /* Prevent extra spacing on the right */
+}
+
+
 /* Transaction Detail Modal */
 #transactionDetailModal {
     z-index: 999;
@@ -499,7 +523,7 @@ tbody tr:last-child td {
 .modal-content {
     background: linear-gradient(to bottom, #182A1B, #0A160F);
     margin: 10% auto;
-    padding: 20px;
+    padding: 30px;
     width: 90%;
     max-width: 400px;
     border-radius: 16px;

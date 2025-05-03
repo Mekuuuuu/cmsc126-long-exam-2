@@ -17,7 +17,7 @@
         <div class="container topbar-content">
             <p>Welcome, <strong>{{ request.user.first_name }} {{ request.user.last_name }}!</strong></p>
             <div class="container-totalbalance">
-                <p>Total Balance: ₱{{ total_balance|floatformat:2|intcomma }}</p>
+                <p> Total Balance : ₱{{ total_balance|floatformat:2|intcomma }}</p>
             </div>
         </div>
     </div>
