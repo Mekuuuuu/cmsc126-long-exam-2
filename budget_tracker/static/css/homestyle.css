@@ -75,15 +75,18 @@ body {
         gap: 0.5rem;
     }
 
-    .nav-center, .nav-right {
+    .nav-center,
+    .nav-right {
         width: 100%;
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
     }
 
-    .nav-center a, .nav-right a {
-        margin: 0; /* Remove horizontal margins for vertical layout */
+    .nav-center a,
+    .nav-right a {
+        margin: 0;
+        /* Remove horizontal margins for vertical layout */
     }
 }
 
@@ -149,6 +152,27 @@ body {
     width: 50%;
     margin-left: 50px;
 }
+
+
+.container.topbar-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 16px;
+    padding: 12px;
+}
+
+
+.container-totalbalance {
+    padding: 12px;
+    border: 2px solid #2BB32A;
+    background: #0A160F;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+}
+
 
 /* Align the transactions-header content to the right within its section */
 .transactions-header {
@@ -226,6 +250,7 @@ body {
     display: flex;
     justify-content: flex-end;
 }
+
 /* Buttons */
 button,
 .button-link {
