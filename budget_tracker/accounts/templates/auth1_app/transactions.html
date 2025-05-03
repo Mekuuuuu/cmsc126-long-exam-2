@@ -4,11 +4,15 @@
 <!DOCTYPE html>
 <html lang="en">
 
+{% block title %}Transactions{% endblock %}
+{% block page_title %}Transactions{% endblock %}
+
 {% block content %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transactions</title>
+    <link rel="stylesheet" href="{% static 'css/transactionsstyle.css' %}">
     <link rel="stylesheet" href="{% static 'css/homestyle.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700&display=swap">
     <script src="{% static 'js/home.js' %}"></script>
