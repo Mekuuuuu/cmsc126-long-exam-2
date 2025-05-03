@@ -11,7 +11,7 @@ SimpliFi is a lightweight and user-friendly budget tracking web application desi
 - 🗂️ **Category-Based Tracking** – Organize expenses by category (e.g., food, transport, utilities).
 - 📅 **Date Filtering** – Generate reports based on date range.
 - 🧾 **Report Generation** – Download financial summaries.
-- 📱 **Responsive Design** – Works on desktop, tablet, and mobile.
+- 📱 **Responsive Design** – Confident that it works fine on Desktop, on mobile, not so much.
 
 ---
 
@@ -138,6 +138,7 @@ Here’s a step-by-step overview of how users interact with SimpliFi:
 
 ### 🏠 Home Screen (Dashboard)
 After logging in, users are directed to the **Dashboard**, which provides an overview of their financial activity.
+Note: The Categories and Budget key sections were removed in the latest update, but the screenshots still show them due to time constraints. We apologize for not being able to update the screenshots before submission.
 
 ![Alt Text](readmeResources/4.png)
 
@@ -145,8 +146,6 @@ After logging in, users are directed to the **Dashboard**, which provides an ove
 - **Navigation Buttons**:  
   - Dashboard  
   - Transactions  
-  - Categories  
-  - Budget  
   - Report  
   - Logout  
 
