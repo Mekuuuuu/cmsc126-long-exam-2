@@ -121,46 +121,45 @@ To deactivate your virtual environment anytime:
 deactivate
 ```
 
-## 🖼️ Feature Walkthrough
-Get a visual overview of SimpliFi’s core features:
+## 🔍 App Walkthrough
 
-### 📊 Dashboard Overview  
-Displays total **Income**, **Expenses**, and **Remaining Balance** at a glance.
+Here’s a step-by-step overview of how users interact with SimpliFi:
 
-![Dashboard Screenshot](/path/to/dashboard.png)
-
----
-
-### ➕ Add Income/Expense Entry  
-Easily input financial records with category and amount fields.
-
-![Add Entry Screenshot](/path/to/add-entry.png)
+### 🔐 Authentication Flow
+- **Login Page**: Users are first directed to the login page.
+  - ![Alt Text](relative/path/to/image.png)
+- **Sign Up Option**: If users don’t have an account yet, they can navigate to the **Sign Up** page.
+  - ![Alt Text](relative/path/to/image.png)
+- **Return to Login**: After creating an account, users return to the login page to sign in.
+  - ![Alt Text](relative/path/to/image.png) 
 
 ---
 
-### 🗂️ Categorized Records  
-View transactions grouped by categories like **Food**, **Transport**, and **Utilities**.
+### 🏠 Home Screen (Dashboard)
+After logging in, users are directed to the **Dashboard**, which provides an overview of their financial activity.
 
-![Category Screenshot](/path/to/categories.png)
+![Alt Text](relative/path/to/image.png)
 
----
+#### Key Sections:
+- **Navigation Buttons**:  
+  - Dashboard  
+  - Transactions  
+  - Categories  
+  - Budget  
+  - Report  
+  - Logout  
 
-### 📅 Filter by Date  
-Use the date filter to generate reports within a specific time range.
+- **Welcome Message**:  
+  - Displays `Welcome, [Username]!`  
+  - Shows the **total balance** at the top.
 
-![Date Filter Screenshot](/path/to/date-filter.png)
+- **Income vs. Expense Bar Chart**:  
+  - Interactive dropdown to toggle between **weekly**, **monthly**, and **yearly** views.  
+  - Clickable legend to toggle visibility of **Income**, **Expense**, or both on the chart.
 
----
+- **Recent Transactions Table**:  
+  - Displays the most recent transactions in a table format.  
+  - A **"See All Transactions"** link is available at the bottom, redirecting users to the full **Transactions** page.
 
-### 🧾 Generate Report  
-Download a summary of your transactions in a readable format.
 
-![Report Screenshot](/path/to/report.png)
-
----
-
-### 📱 Responsive Design  
-SimpliFi is mobile-friendly and adapts to all screen sizes.
-
-![Mobile View Screenshot](/path/to/mobile.png)
 
