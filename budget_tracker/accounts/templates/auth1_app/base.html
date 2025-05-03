@@ -19,7 +19,27 @@
             <a href="#">Transactions</a>
             <a href="#">Categories</a>
             <a href="#">Budget</a>
-            <a href="#">Report</a>
+            <!-- Dropdown for Export -->
+            <div class="dropdown-report" style="margin-top: 1rem;">
+                <button class="dropdown-button-report" id="reportDropdownButton">
+                    Report
+                </button>
+                <div class="dropdown-menu-report" aria-labelledby="reportDropdownButton">
+                    <a class="dropdown-item-report" href="/export-csv/?range=monthly">Export Monthly</a>
+                    <a class="dropdown-item-report" href="/export-csv/?range=annually">Export Annually</a>
+                    <div class="dropdown-divider"></div>
+                    <!-- Custom Range Form -->
+                    <form action="/export-csv/" method="get">
+                        <label for="start" class="text-sm">From:</label>
+                        <input type="date" name="start_date" required>
+            
+                        <label for="end" class="text-sm">To:</label>
+                        <input type="date" name="end_date" required>
+            
+                        <button type="submit">Export Custom</button>
+                    </form>
+                </div>
+            </div>
         </div>
         <div class="nav-right">
             <a href="#">Logout</a>
@@ -28,4 +48,19 @@
     {% block content %}
     {% endblock %}
 </body>
+
+<script>
+    document.getElementById('reportDropdownButton').addEventListener('click', function() {
+        // Add logic for the dropdown button click event
+        console.log('Report dropdown button clicked!');
+    });
+
+    // You can also target elements using the more specific class
+    const dropdownItems = document.querySelectorAll('.dropdown-item-report');
+    dropdownItems.forEach(item => {
+        item.addEventListener('click', function() {
+            console.log('Item clicked:', item.textContent);
+        });
+    });
+</script>
 </html>

@@ -11,7 +11,11 @@ from django.db.models import Sum
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from collections import defaultdict
-
+import csv
+from django.http import HttpResponse
+from django.utils.dateparse import parse_date
+import platform
+from datetime import date, timedelta
 
 from django.core.paginator import Paginator
 
@@ -181,3 +185,57 @@ def add_category(request):
         })
     
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+def export_transactions_csv(request):
+    if not request.user.is_authenticated:
+        return HttpResponse("Unauthorized", status=401)
+
+    # Determine platform-specific date format
+    is_windows = platform.system() == 'Windows'
+    date_format = '%#m/%#d/%Y %H:%M:%S' if is_windows else '%-m/%-d/%Y %H:%M:%S'
+
+    # Handle range shortcuts
+    today = date.today()
+    range_type = request.GET.get('range')
+    start_date_raw = request.GET.get('start_date')
+    end_date_raw = request.GET.get('end_date')
+
+    if range_type == 'monthly':
+        start_date = date(today.year, today.month, 1)
+        next_month = start_date.replace(day=28) + timedelta(days=4)
+        end_date = next_month.replace(day=1) - timedelta(days=1)
+
+    elif range_type == 'annually':
+        start_date = date(today.year, 1, 1)
+        end_date = date(today.year, 12, 31)
+
+    else:
+        start_date = parse_date(start_date_raw) if start_date_raw else None
+        end_date = parse_date(end_date_raw) if end_date_raw else None
+
+    transactions = Transaction.objects.filter(user=request.user).select_related('category')
+
+    if start_date:
+        transactions = transactions.filter(date__gte=start_date)
+    if end_date:
+        transactions = transactions.filter(date__lte=end_date)
+
+    transactions = transactions.order_by('-date')
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="transactions.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Date', 'Name', 'Category', 'Amount', 'Type', 'Description'])
+
+    for t in transactions:
+        writer.writerow([
+            t.date.strftime(date_format),
+            t.name,
+            t.category.name if t.category else '',
+            f"{t.amount:.2f}",
+            t.type.capitalize(),
+            t.description or ''
+        ])
+
+    return response
