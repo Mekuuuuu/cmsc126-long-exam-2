@@ -1,7 +1,7 @@
 /* General Reset and Typography */
 body {
     margin: 20px;
-    padding: 0px;
+    padding: 0 80px;
     font-family: 'Geist', sans-serif;
     background-color: #1A1E1C;
     background: radial-gradient(circle at top right, rgba(43, 179, 42, 0.2) 0%, transparent 40%), #1A1E1C;
@@ -11,8 +11,66 @@ body {
     box-sizing: border-box;
     height: 100vh;
 }
+.main-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 20px;
+    /* padding: 0 40px; */
+}
 
-/* Apply box-sizing globally */
+/* Adjust widths as needed */
+.left-image {
+    width: 50%; /* or any size appropriate for your layout */
+}
+
+.right-table {
+    width: 50%;
+}
+
+/* Align the transactions-header content to the right within its section */
+.transactions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* For smaller screens (responsive) */
+@media screen and (max-width: 768px) {
+    .page-wrapper {
+        flex-direction: column;
+    }
+    .left-side, .right-side {
+        width: 100%;
+    }
+}
+
+.left-side {
+    width: 30%;
+    background-color: #f9f9f9;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.right-side {
+    flex: 1;
+}
+
+.left-side {
+    width: 30%;
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.right-side {
+    flex: 1;
+}
+
 *,
 *::before,
 *::after {
@@ -79,7 +137,7 @@ form {
 
 .profile-btn {
     background-color: #2BB32A;
-    color: white;
+    color: rgb(255, 255, 255);
     padding: 10px 16px;
     border: none;
     border-radius: 8px;
@@ -135,19 +193,6 @@ form {
     z-index: 1000;
     min-width: 220px;
 }
-
-
-
-
-/* Transactions Section */
-.transactions-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    padding: 0 10px;
-}
-
 
 table {
     width: 100%;
@@ -207,23 +252,24 @@ tbody td {
     align-items: center;
     margin-bottom: 20px;
     color: #ADB2B1;
+    margin-top: 20px;
 }
 
 .transactions-header h2 {
     margin: 0;
-    color: #ADB2B1;
+    color: #C0E4CD;
 }
 
 .transactions-header button {
     background-color: #2BB32A;
     color: white;
     border: none;
-    padding: 10px 20px;
+    /* padding: 10px 20px; */
     border-radius: 8px;
     cursor: pointer;
     font-size: 15px;
     font-weight: bold;
-    height: 50px;
+    height: px;
 }
 
 .transactions-header button:hover {
@@ -251,6 +297,10 @@ tbody td {
 .transaction-table th {
     background-color: #1A1E1C;
     color: #2BB32A;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
 }
 
 /* Income/Expense Colors */
