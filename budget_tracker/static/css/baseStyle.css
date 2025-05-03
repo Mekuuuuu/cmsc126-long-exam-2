@@ -48,28 +48,31 @@
 }
 
 .dropdown-button-report {
-    background-color: #007bff;
+    background: linear-gradient(to right, #0D1C13, #1B2D1D);
+    border: 1px solid #2BB32A;
     color: white;
-    border: none;
     padding: 10px 20px;
-    font-size: 14px;
+    font-size: 15px;
     cursor: pointer;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-weight: bold;
+    height: 50px;
 }
 
 .dropdown-button-report:hover {
-    background-color: #0056b3;
+    background-color: #248824;
+    border-color: #2BB32A;
 }
 
 /* Dropdown Menu Styles */
 .dropdown-menu-report {
     display: none;
     position: absolute;
+    margin-top: 10px;
     top: 100%;
     left: 0;
-    background-color: white;
-    border: 1px solid #ccc;
+    background-color: #0D1C13;
+    border: 1px solid #2BB32A;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     width: 200px;
@@ -85,8 +88,7 @@
 }
 
 .dropdown-menu-report a:hover {
-    background-color: #f8f9fa;
-    color: #007bff;
+    color: #2BB32A;
 }
 
 /* Show the dropdown when hovering over the button */
@@ -104,7 +106,7 @@
 .dropdown-menu-report input[type="date"] {
     padding: 5px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #2BB32A;
     border-radius: 4px;
     font-size: 14px;
 }
@@ -112,7 +114,7 @@
 .dropdown-menu-report button {
     padding: 8px 16px;
     border: none;
-    background-color: #007bff;
+    background-color: #2BB32A;
     color: white;
     font-size: 14px;
     border-radius: 5px;
@@ -120,12 +122,12 @@
 }
 
 .dropdown-menu-report button:hover {
-    background-color: #0056b3;
+    background-color: #005600;
 }
 
 /* Additional Styling for Links and Divider */
 .dropdown-divider {
     height: 1px;
-    background-color: #ddd;
+    background-color: #2BB32A;
     margin: 8px 0;
 }
