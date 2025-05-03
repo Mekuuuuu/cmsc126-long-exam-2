@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}My App{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/basestyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/baseStyle.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700&display=swap">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -22,10 +22,8 @@
             <a href="#">Categories</a>
             <a href="#">Budget</a>
             <!-- Dropdown for Export -->
-            <div class="dropdown-report" style="margin-top: 1rem;">
-                <button class="dropdown-button-report" id="reportDropdownButton">
-                    Report
-                </button>
+            <div class="dropdown-report">
+                <a href="#" class="report-link" id="reportDropdownButton">Report</a>
                 <div class="dropdown-menu-report" aria-labelledby="reportDropdownButton">
                     <a class="dropdown-item-report" href="/export-csv/?range=monthly">Export Monthly</a>
                     <a class="dropdown-item-report" href="/export-csv/?range=annually">Export Annually</a>
