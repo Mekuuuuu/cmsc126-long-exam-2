@@ -165,6 +165,25 @@
                     data = categories.map(cat => cat.total);
                     labels = categories.map(cat => cat.name);
                     
+                    // Define color palettes for income and expense categories
+                    const incomeColors = [
+                        '#2BB32A', // Primary green
+                        '#4CAF50', // Light green
+                        '#81C784', // Lighter green
+                        '#A5D6A7', // Very light green
+                        '#C8E6C9', // Lightest green
+                        '#E8F5E9'  // Pale green
+                    ];
+                    
+                    const expenseColors = [
+                        '#E53935', // Primary red
+                        '#EF5350', // Light red
+                        '#E57373', // Lighter red
+                        '#EF9A9A', // Very light red
+                        '#FFCDD2', // Lightest red
+                        '#FFEBEE'  // Pale red
+                    ];
+                    
                     // Generate colors for categories
                     colors = labels.map((_, index) => {
                         if (chartData.selectedCategory !== 'all' && 
@@ -173,7 +192,9 @@
                         } else if (chartData.selectedCategory !== 'all') {
                             return chartData.filterType === 'income' ? 'rgba(43, 179, 42, 0.3)' : 'rgba(229, 57, 53, 0.3)';
                         } else {
-                            return chartData.filterType === 'income' ? '#2BB32A' : '#E53935';
+                            // Use different colors for each category
+                            const colorPalette = chartData.filterType === 'income' ? incomeColors : expenseColors;
+                            return colorPalette[index % colorPalette.length];
                         }
                     });
                 }
