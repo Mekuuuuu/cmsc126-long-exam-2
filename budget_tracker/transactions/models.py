@@ -8,11 +8,12 @@ class Category(models.Model):
         ('income', 'Income'),
         ('expense', 'Expense'),
     ]
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50)
     type = models.CharField(max_length=7, choices=CATEGORY_TYPE_CHOICES, null=True, blank=True)
     
     class Meta:
         verbose_name_plural = 'Categories'
+        unique_together = ('user', 'name')
     
     def __str__(self):
         return self.name

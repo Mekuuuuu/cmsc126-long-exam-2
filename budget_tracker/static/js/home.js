@@ -2,21 +2,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.getElementById('myChart');
     const container = canvas.parentElement;
 
+    const labels = JSON.parse(document.getElementById('labels').textContent);
+    const incomeTotals = JSON.parse(document.getElementById('income_totals').textContent);
+    const expenseTotals = JSON.parse(document.getElementById('expense_totals').textContent);
+
     const chartData = {
-        monthly: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-            income: [12, 19, 3, 5, 2, 3],
-            expense: [10, 15, 8, 4, 1, 2]
+        daily: {
+            labels: labels.daily,
+            income: incomeTotals.daily,
+            expense: expenseTotals.daily
         },
         weekly: {
-            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-            income: [100, 150, 80, 120],
-            expense: [90, 120, 70, 110]
+            labels: labels.weekly,
+            income: incomeTotals.weekly,
+            expense: expenseTotals.weekly
+        },
+        monthly: {
+            labels: labels.monthly,
+            income: incomeTotals.monthly,
+            expense: expenseTotals.monthly
         },
         yearly: {
-            labels: ['2020', '2021', '2022', '2023', '2024'],
-            income: [1000, 1500, 1100, 1300, 1400],
-            expense: [900, 1300, 950, 1200, 1250]
+            labels: labels.yearly,
+            income: incomeTotals.yearly,
+            expense: expenseTotals.yearly
         }
     };
 

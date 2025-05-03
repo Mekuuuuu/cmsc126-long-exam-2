@@ -6,68 +6,60 @@ from django.contrib.auth.models import User
 from transactions.models import Transaction, Category
 
 class Command(BaseCommand):
-    help = "Generates transactions for testing"
-    
+    help = "Generates fake transactions for testing"
+
     def handle(self, *args, **options):
         fake = Faker()
-        
-        # Define categories for both income and expense
-        income_categories = [
-            'Salary',
-            'Allowance',
-        ]
-        
-        expense_categories = [
-            'Food',
-            'Transport',
-            'Education',
-            'Social',
-            'Medical',
-            'Personal',
-            'Apparel',
-            'Vacation',
-        ]
-        
         gmt8 = timezone(timedelta(hours=8))
-        
-        # Create categories in the database
-        for category in income_categories:
-            Category.objects.get_or_create(name=category, type='income')
-        
-        for category in expense_categories:
-            Category.objects.get_or_create(name=category, type='expense')
-            
-        user = User.objects.filter(username='test@gmail.com').first()
-        if not user:
-            user = User.objects.create_superuser(username='test@gmail.com', password='test')
-        
-        # Retrieve all categories from the database
-        income_categories_db = Category.objects.filter(type='income')
-        expense_categories_db = Category.objects.filter(type='expense')
-        
-        types = [x[0] for x in Transaction.TRANSACTION_TYPE_CHOICES]
-        
-        for i in range(20):
-            transaction_type = random.choice(types)
-            
-            # Choose category based on the transaction type
+
+        # Create or get test user
+        user, created = User.objects.get_or_create(username='test@gmail.com', defaults={
+            'first_name': 'Test',
+            'last_name': 'User',
+            'email': 'test@gmail.com',
+        })
+        if created:
+            user.set_password('test')
+            user.is_superuser = True
+            user.is_staff = True
+            user.save()
+
+        income_categories = ['Salary', 'Allowance']
+        expense_categories = ['Food', 'Transport', 'Education', 'Social', 'Medical', 'Personal', 'Apparel', 'Vacation']
+
+        # Ensure user-specific categories exist
+        for name in income_categories:
+            Category.objects.get_or_create(name=name, type='income', user=user)
+
+        for name in expense_categories:
+            Category.objects.get_or_create(name=name, type='expense', user=user)
+
+        # Fetch from DB for reference
+        income_categories_db = Category.objects.filter(type='income', user=user)
+        expense_categories_db = Category.objects.filter(type='expense', user=user)
+
+        for _ in range(100):
+            transaction_type = random.choice(['income', 'expense'])
+
             if transaction_type == 'income':
                 category = random.choice(income_categories_db)
-            else:
-                category = random.choice(expense_categories_db)
-                
-            # Generate a name for the transaction
-            if transaction_type == 'income':
                 name = f"{category.name} Payment"
             else:
+                category = random.choice(expense_categories_db)
                 name = f"{category.name} Expense"
-            
-            # Create the transaction
+
+            amount = round(random.uniform(50, 2500), 2)
+            date = fake.date_time_between(start_date='-5y', end_date='now', tzinfo=gmt8)
+            description = fake.sentence(nb_words=6)
+
             Transaction.objects.create(
-                category=category,
                 user=user,
                 name=name,
-                amount=random.uniform(1, 2500),
-                date=fake.date_time_between(start_date='-1y', end_date='now', tzinfo=gmt8),
-                type=transaction_type
+                type=transaction_type,
+                category=category,
+                amount=amount,
+                date=date,
+                description=description
             )
+
+        self.stdout.write(self.style.SUCCESS("✅ Successfully generated 100 transactions."))

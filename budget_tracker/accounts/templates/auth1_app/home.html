@@ -28,15 +28,9 @@
         {% include "partials/home/add_transaction_modal.html" %}
         {% include "partials/home/add_category_modal.html" %}
 
-        <script id="labels" type="application/json">
-            {{ labels|json_script }}
-        </script>
-        <script id="income_totals" type="application/json">
-            {{ income_totals|json_script }}
-        </script>
-        <script id="expense_totals" type="application/json">
-            {{ expense_totals|json_script }}
-        </script>
+        {{ labels|json_script:"labels" }}
+        {{ income_totals|json_script:"income_totals" }}
+        {{ expense_totals|json_script:"expense_totals" }}
     </div>
 
     {% endblock %}

@@ -16,7 +16,9 @@ from django.http import HttpResponse
 from django.utils.dateparse import parse_date
 import platform
 from datetime import date, timedelta
-
+from django.utils.timezone import now
+from django.db.models.functions import TruncDay, TruncMonth, TruncWeek, TruncYear
+from datetime import datetime
 from django.core.paginator import Paginator
 
 def register_view(request):
@@ -72,28 +74,89 @@ def logout_view(request):
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def home_view(request):
+    
+    user = request.user
+    today = now()
+    
     # Get all transactions for the user
-    full_transactions = Transaction.objects.filter(user=request.user).order_by('-date')
+    full_transactions = Transaction.objects.filter(user=user).order_by('-date')
 
     # Calculate income and expense totals
     income = full_transactions.filter(type='income').aggregate(total_income=Sum('amount'))['total_income'] or 0
     expense = full_transactions.filter(type='expense').aggregate(total_expenses=Sum('amount'))['total_expenses'] or 0
     total_balance = income - expense
 
-    # Prepare chart data
-    dates = set()
-    income_data = defaultdict(float)
-    expense_data = defaultdict(float)
+    # Daily grouping (e.g., this week)
+    daily = (
+        Transaction.objects.filter(user=user, date__month=today.month, date__year=today.year)
+        .annotate(day=TruncDay('date'))
+        .values('day', 'type')
+        .annotate(total=Sum('amount'))
+        .order_by('day')
+    )
+    
+    # Monthly grouping (e.g., this year)
+    monthly = (
+        Transaction.objects.filter(user=user, date__year=today.year)
+        .annotate(month=TruncMonth('date'))
+        .values('month', 'type')
+        .annotate(total=Sum('amount'))
+        .order_by('month')
+    )
 
-    for txn in full_transactions:
-        date_str = txn.date.strftime('%Y-%m-%d')
-        dates.add(date_str)
-        if txn.type == 'income':
-            income_data[date_str] += txn.amount
-        else:
-            expense_data[date_str] += txn.amount
+    # Weekly grouping (this month)
+    weekly = (
+        Transaction.objects.filter(user=user, date__month=today.month, date__year=today.year)
+        .annotate(week=TruncWeek('date'))
+        .values('week', 'type')
+        .annotate(total=Sum('amount'))
+        .order_by('week')
+    )
 
-    sorted_dates = sorted(dates)
+    # Yearly grouping (last 5 years)
+    yearly = (
+        Transaction.objects.filter(user=user, date__year__gte=today.year - 4)
+        .annotate(year=TruncYear('date'))
+        .values('year', 'type')
+        .annotate(total=Sum('amount'))
+        .order_by('year')
+    )
+    
+    def build_chart_data(grouped_data, key):
+        income = []
+        expense = []
+        labels = []
+
+        seen = set()
+        for entry in grouped_data:
+            if key == 'month':
+                label = entry[key].date().strftime('%B')
+            elif key == 'week':
+                week_start = entry[key].date()
+                week_end = week_start + timedelta(days=6)
+                label = f"{week_start.strftime('%b %d')} - {week_end.strftime('%b %d')}"
+            elif key == 'day':
+                label = entry[key].date().strftime('%b %d')
+            else:
+                label = entry[key].strftime('%Y')
+
+            if label not in seen:
+                seen.add(label)
+                labels.append(label)
+                income.append(0)
+                expense.append(0)
+            idx = labels.index(label)
+            if entry['type'] == 'income':
+                income[idx] = float(entry['total'])
+            else:
+                expense[idx] = float(entry['total'])
+        return labels, income, expense
+
+    # Build chart data for monthly, weekly, and yearly data
+    month_labels, month_income, month_expense = build_chart_data(monthly, 'month')
+    day_labels, day_income, day_expense = build_chart_data(daily, 'day')
+    week_labels, week_income, week_expense = build_chart_data(weekly, 'week')
+    year_labels, year_income, year_expense = build_chart_data(yearly, 'year')
 
     # Prepare other data
     recent_transactions = full_transactions[:5]
@@ -104,9 +167,24 @@ def home_view(request):
         'transactions': recent_transactions,
         'total_balance': total_balance,
         'categories': categories,
-        'labels': sorted_dates,
-        'income_totals': [income_data[date] for date in sorted_dates],
-        'expense_totals': [expense_data[date] for date in sorted_dates],
+        'labels': {
+            'monthly': month_labels,
+            'weekly': week_labels,
+            'yearly': year_labels,
+            'daily': day_labels,
+        },
+        'income_totals': {
+            'monthly': month_income,
+            'weekly': week_income,
+            'yearly': year_income,
+            'daily': day_income,
+        },
+        'expense_totals': {
+            'monthly': month_expense,
+            'weekly': week_expense,
+            'yearly': year_expense,
+            'daily': day_expense,
+        },
     }
 
     return render(request, 'auth1_app/home.html', context)
@@ -161,13 +239,18 @@ class TransactionsView(LoginRequiredMixin, View):
 @login_required
 def add_transaction(request):
     if request.method == "POST":
+        
+        date_str = request.POST.get("datetime")
+        transaction_date = datetime.strptime(date_str, '%Y-%m-%dT%H:%M')  # Format: '2025-05-03T12:30'
+        
         Transaction.objects.create(
             user=request.user,
             name=request.POST.get("name"),
             type=request.POST.get("type"),
             category=Category.objects.get(id=request.POST.get("category")),
             amount=request.POST.get("amount"),
-            description=request.POST.get("description")
+            description=request.POST.get("description"),
+            date=transaction_date,
         )
     return redirect('home')
 
