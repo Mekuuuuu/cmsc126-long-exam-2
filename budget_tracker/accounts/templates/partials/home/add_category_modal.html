@@ -1,0 +1,21 @@
+<div id="categoryModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>Add New Category</h3>
+        <form id="addCategoryForm" method="POST" action="{% url 'add_category' %}">
+            {% csrf_token %}
+            <label>Category Name:</label>
+            <input type="text" name="name" required>
+
+            <label>Type:</label>
+            <select name="type" required>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+            </select>
+
+            <div class="form-actions">
+                <button type="submit">Create Category</button>
+                <button type="button" onclick="closeCategoryModal()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
