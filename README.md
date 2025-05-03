@@ -169,7 +169,22 @@ Note: The Categories and Budget key sections were removed in the latest update, 
       ![Alt Text](readmeResources/9.png)
     - Disable the 'Income' toggle in the barchart's legend 
       ![Alt Text](readmeResources/8.png)
-        
+
+- **Edit Transaction**
+  - Click on the transaction on the table and a modal will show.
+      ![Alt Text](readmeResources/11.png)
+  - Click 'Edit' to edit transaction.
+      ![Alt Text](readmeResources/12.png)
+  - The edit is reflected on the table.
+      ![Alt Text](readmeResources/13.png)
+- **Delete Transaction**
+  -  Click on the transaction on the table and a modal will show.
+      ![Alt Text](readmeResources/11.png)
+  -  Click 'Delete' and a confirmation modal will show. Click 'Yes'.
+      ![Alt Text](readmeResources/14.png)
+  - The transaction is now deleted, thus updates the total balance, the chart, and the table.
+      ![Alt Text](readmeResources/15.png)
+    
 - **Recent Transactions Table**:  
   - Displays the most recent transactions in a table format.  
   - A **"See All Transactions"** link is available at the bottom, redirecting users to the full **Transactions** page.
