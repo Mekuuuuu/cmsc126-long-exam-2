@@ -9,35 +9,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="{% static 'css/homestyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/transactionsstyle.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700&display=swap">
 </head>
 <body>
 
+    <h2>Transactions</h2>
     <h2>Pie Chart Here</h2>
 
-    <h2>Transactions</h2>
-
     <!-- Filter Toggle -->
-    <div class="filters">
-        <a href="?type=all&category=all" class="{% if filter_type == 'all' %}active{% endif %}">All</a> |
-        <a href="?type=income&category=all" class="{% if filter_type == 'income' %}active{% endif %}">Income</a> |
-        <a href="?type=expense&category=all" class="{% if filter_type == 'expense' %}active{% endif %}">Expense</a>
-    </div>
+    <div class="filter-bar">
+        <div class="filters">
+            <a href="?type=all&category=all" class="{% if filter_type == 'all' %}active{% endif %}">All</a>
+            <a href="?type=income&category=all" class="{% if filter_type == 'income' %}active{% endif %}">Income</a>
+            <a href="?type=expense&category=all" class="{% if filter_type == 'expense' %}active{% endif %}">Expense</a>
+        </div>
 
-    <!-- Category Dropdown -->
-    <form method="get" style="margin-top: 1em;">
-        <input type="hidden" name="type" value="{{ filter_type }}">
-        <label for="category">Category:</label>
-        <select name="category" id="category" onchange="this.form.submit()">
-            <option value="all" {% if selected_category == 'all' %}selected{% endif %}>All</option>
-            {% for category in categories %}
-                <option value="{{ category.id }}" {% if category.id|stringformat:"s" == selected_category %}selected{% endif %}>
-                    {{ category.name }}
-                </option>
-            {% endfor %}
-        </select>
-    </form>
+        <!-- Category Dropdown -->
+        <form method="get" style="margin-top: 1em;">
+            <input type="hidden" name="type" value="{{ filter_type }}">
+            <select name="category" id="category" onchange="this.form.submit()">
+                <option value="all" {% if selected_category == 'all' %}selected{% endif %}>All</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if category.id|stringformat:"s" == selected_category %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
     <table>
         <thead>
             <tr>
@@ -64,6 +64,7 @@
         </tbody>
     </table>
 
+    {% if page_obj.paginator.num_pages > 1 %}
     <div class="pagination">
         {% if page_obj.has_previous %}
             <a href="?type={{ filter_type }}&category={{ selected_category }}&page={{ page_obj.previous_page_number }}">Previous</a>
@@ -75,6 +76,7 @@
             <a href="?type={{ filter_type }}&category={{ selected_category }}&page={{ page_obj.next_page_number }}">Next</a>
         {% endif %}
     </div>
+{% endif %}
 
 </body>
 {% endblock %}
