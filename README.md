@@ -188,6 +188,6 @@ Note: The Categories and Budget key sections were removed in the latest update, 
 - **Recent Transactions Table**:  
   - Displays the most recent transactions in a table format.  
   - A **"See All Transactions"** link is available at the bottom, redirecting users to the full **Transactions** page.
-
+![Alt Text](readmeResources/16.png)
 
 
