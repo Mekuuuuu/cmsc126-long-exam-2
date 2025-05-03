@@ -160,12 +160,12 @@ body {
     justify-content: space-between;
     width: 100%;
     gap: 16px;
-    padding: 12px;
+    padding: 10px 20px 10px 20px;
 }
 
 
 .container-totalbalance {
-    padding: 12px;
+    padding: 0 12px 0 12px;
     border: 2px solid #2BB32A;
     background: #0A160F;
     border-radius: 12px;
@@ -255,8 +255,8 @@ body {
 button,
 .button-link {
     font-family: inherit;
-    /* background-color: #2BB32A; */
-    color: rgb(255, 255, 255);
+    background-color: #2BB32A;
+    color: #FFFFFF;
     padding: 10px;
     margin-top: 10px;
     border: none;
@@ -284,8 +284,8 @@ form {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 10px;
     margin: 20px 0 0;
+    width: 100%;
 }
 
 .profile-btn {
