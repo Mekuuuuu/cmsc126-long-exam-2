@@ -19,7 +19,7 @@ SimpliFi is a lightweight and user-friendly budget tracking web application desi
 
 - **Frontend**: HTML, CSS, JavaScript
 - **Backend**: Django (Python)
-- **Database**: MySQL
+- **Database**: SQLite
 - **Styling**: Vanilla CSS
 - **Version Control**: Git & GitHub
 
