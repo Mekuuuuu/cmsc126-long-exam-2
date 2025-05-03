@@ -68,7 +68,7 @@
 .dropdown-menu-report {
     display: none;
     position: absolute;
-    margin-top: 10px;
+    margin-top: 0px;
     top: 100%;
     left: 0;
     background-color: #0D1C13;
@@ -105,7 +105,7 @@
 
 .dropdown-menu-report input[type="date"] {
     padding: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     border: 1px solid #2BB32A;
     border-radius: 4px;
     font-size: 14px;
