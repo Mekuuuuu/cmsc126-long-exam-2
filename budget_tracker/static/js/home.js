@@ -1,86 +1,95 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Initialize chart only if we're on the home page
     const canvas = document.getElementById('myChart');
-    const container = canvas.parentElement;
+    if (canvas) {
+        const container = canvas.parentElement;
+        const labels = JSON.parse(document.getElementById('labels').textContent);
+        const incomeTotals = JSON.parse(document.getElementById('income_totals').textContent);
+        const expenseTotals = JSON.parse(document.getElementById('expense_totals').textContent);
 
-    const labels = JSON.parse(document.getElementById('labels').textContent);
-    const incomeTotals = JSON.parse(document.getElementById('income_totals').textContent);
-    const expenseTotals = JSON.parse(document.getElementById('expense_totals').textContent);
-
-    const chartData = {
-        daily: {
-            labels: labels.daily,
-            income: incomeTotals.daily,
-            expense: expenseTotals.daily
-        },
-        weekly: {
-            labels: labels.weekly,
-            income: incomeTotals.weekly,
-            expense: expenseTotals.weekly
-        },
-        monthly: {
-            labels: labels.monthly,
-            income: incomeTotals.monthly,
-            expense: expenseTotals.monthly
-        },
-        yearly: {
-            labels: labels.yearly,
-            income: incomeTotals.yearly,
-            expense: expenseTotals.yearly
-        }
-    };
-
-    let chart = new Chart(canvas, {
-        type: 'bar',
-        data: {
-            labels: chartData.monthly.labels,
-            datasets: [
-                {
-                    label: 'Income',
-                    data: chartData.monthly.income,
-                    backgroundColor: '#2BB32A'
-                },
-                {
-                    label: 'Expense',
-                    data: chartData.monthly.expense,
-                    backgroundColor: '#E53935'
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: { stacked: false },
-                y: { beginAtZero: true },
+        const chartData = {
+            daily: {
+                labels: labels.daily,
+                income: incomeTotals.daily,
+                expense: expenseTotals.daily
+            },
+            weekly: {
+                labels: labels.weekly,
+                income: incomeTotals.weekly,
+                expense: expenseTotals.weekly
+            },
+            monthly: {
+                labels: labels.monthly,
+                income: incomeTotals.monthly,
+                expense: expenseTotals.monthly
+            },
+            yearly: {
+                labels: labels.yearly,
+                income: incomeTotals.yearly,
+                expense: expenseTotals.yearly
             }
-        }
-    });
+        };
 
-    document.getElementById('timeFilter').addEventListener('change', function () {
-        const selected = this.value;
-        chart.data.labels = chartData[selected].labels;
-        chart.data.datasets[0].data = chartData[selected].income;
-        chart.data.datasets[1].data = chartData[selected].expense;
-        chart.update();
-    });
+        let chart = new Chart(canvas, {
+            type: 'bar',
+            data: {
+                labels: chartData.monthly.labels,
+                datasets: [
+                    {
+                        label: 'Income',
+                        data: chartData.monthly.income,
+                        backgroundColor: '#2BB32A'
+                    },
+                    {
+                        label: 'Expense',
+                        data: chartData.monthly.expense,
+                        backgroundColor: '#E53935'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { stacked: false },
+                    y: { beginAtZero: true },
+                }
+            }
+        });
 
+        document.getElementById('timeFilter').addEventListener('change', function () {
+            const selected = this.value;
+            chart.data.labels = chartData[selected].labels;
+            chart.data.datasets[0].data = chartData[selected].income;
+            chart.data.datasets[1].data = chartData[selected].expense;
+            chart.update();
+        });
+    }
+
+    // Initialize modals and buttons only if they exist
     const modal = document.getElementById("transactionModal");
     const categoryModal = document.getElementById("categoryModal");
-    const editTransactionModal = document.getElementById('editTransactionModal')
-    const deleteTransactionModal = document.getElementById('deleteTransactionModal')
-    const transactionDetailModal = document.getElementById("transactionDetailModal")
+    const editTransactionModal = document.getElementById('editTransactionModal');
+    const deleteTransactionModal = document.getElementById('deleteTransactionModal');
+    const transactionDetailModal = document.getElementById("transactionDetailModal");
     const datetimeInput = document.getElementById("datetimeInput");
     const typeRadios = document.querySelectorAll('input[name="type"]');
     const categorySelect = document.getElementById('categorySelect');
+    const openModalBtn = document.getElementById("openModalBtn");
+    const addCategoryForm = document.getElementById("addCategoryForm");
+    const addCategoryBtn = document.getElementById("addCategoryBtn");
 
-    document.getElementById("openModalBtn").onclick = () => {
-        modal.style.display = "block";
-        const now = new Date();
-        const offset = now.getTimezoneOffset();
-        const localDateTime = new Date(now.getTime() - offset * 60 * 1000).toISOString().slice(0, 16);
-        datetimeInput.value = localDateTime;
-        filterCategories('income');
-    };
+    // Only set up add transaction modal if we're on the home page
+    if (openModalBtn && modal && datetimeInput && typeRadios && categorySelect) {
+        openModalBtn.onclick = () => {
+            modal.style.display = "block";
+            const now = new Date();
+            const offset = now.getTimezoneOffset();
+            const localDateTime = new Date(now.getTime() - offset * 60 * 1000).toISOString().slice(0, 16);
+            datetimeInput.value = localDateTime;
+            filterCategories('income');
+        };
+    }
 
     function closeModal() {
         const modal = document.getElementById("transactionModal");
@@ -154,47 +163,46 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    document.getElementById("addCategoryForm").addEventListener("submit", function (event) {
-        event.preventDefault();
+    // Only set up category form if it exists
+    if (addCategoryForm) {
+        addCategoryForm.addEventListener("submit", function (event) {
+            event.preventDefault();
 
-        const formData = new FormData(this);
-        const newCategoryType = formData.get('type');
+            const formData = new FormData(this);
+            const newCategoryType = formData.get('type');
 
-        fetch("/add_category/", {
-            method: "POST",
-            body: formData,
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.category_id && data.category_name) {
-                    const newOption = document.createElement('option');
-                    newOption.value = data.category_id;
-                    newOption.textContent = data.category_name;
-                    newOption.dataset.type = newCategoryType;
-                    newOption.selected = true;
-
-                    categorySelect.appendChild(newOption);
-
-                    const radioToSelect = document.querySelector(`input[name="type"][value="${newCategoryType}"]`);
-                    if (radioToSelect) {
-                        radioToSelect.checked = true;
-                        filterCategories(newCategoryType);
-                    }
-
-                    closeCategoryModal();
-                } else {
-                    alert('Error creating category');
-                }
+            fetch("/add_category/", {
+                method: "POST",
+                body: formData,
             })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('There was an error creating the category');
-            });
-    });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Add the new category to the select element
+                        const option = document.createElement('option');
+                        option.value = data.category_id;
+                        option.textContent = data.category_name;
+                        categorySelect.appendChild(option);
 
-    document.getElementById("addCategoryBtn").onclick = () => {
-        categoryModal.style.display = "block";
-    };
+                        // Close the modal
+                        closeCategoryModal();
+                    } else {
+                        alert(data.error || 'Failed to add category');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while adding the category');
+                });
+        });
+    }
+
+    // Only set up category button if it exists
+    if (addCategoryBtn && categoryModal) {
+        addCategoryBtn.onclick = () => {
+            categoryModal.style.display = "block";
+        };
+    }
 
     function filterCategories(selectedType) {
         let foundValidOption = false;
@@ -235,10 +243,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Add event listeners to all transaction rows
+    // Add click handler for transaction rows
     document.querySelectorAll('.transaction-row').forEach(row => {
         row.addEventListener('click', function() {
-            // Retrieve the transaction ID and other data from the clicked row
+            console.log('Transaction row clicked');
+            // Get transaction data from data attributes
             const transactionId = this.dataset.id;
             const name = this.dataset.name;
             const amount = this.dataset.amount;
@@ -246,24 +255,48 @@ document.addEventListener("DOMContentLoaded", () => {
             const categoryId = this.dataset.categoryId;
             const date = this.dataset.date;
             const description = this.dataset.description;
+            const type = this.dataset.type;
+
+            console.log('Transaction data:', { transactionId, name, amount, category, categoryId, date, description, type });
 
             // Store the transaction data in the detail modal
-            const detailModal = document.getElementById('transactionDetailModal');
-            detailModal.dataset.transactionId = transactionId;
-            detailModal.dataset.name = name;
-            detailModal.dataset.amount = amount;
-            detailModal.dataset.categoryId = categoryId;
-            detailModal.dataset.description = description;
+            if (!transactionDetailModal) {
+                console.error('Transaction detail modal not found');
+                return;
+            }
+
+            console.log('Transaction detail modal found');
+
+            transactionDetailModal.dataset.transactionId = transactionId;
+            transactionDetailModal.dataset.name = name;
+            transactionDetailModal.dataset.amount = amount;
+            transactionDetailModal.dataset.categoryId = categoryId;
+            transactionDetailModal.dataset.description = description;
+            transactionDetailModal.dataset.type = type;
 
             // Fill modal content with transaction details
-            document.getElementById('modalTransactionName').innerText = name;
-            document.getElementById('modalTransactionAmount').innerText = amount;
-            document.getElementById('modalTransactionCategory').innerText = category;
-            document.getElementById('modalTransactionDate').innerText = date;
-            document.getElementById('modalTransactionDescription').innerText = description;
+            const nameElement = document.getElementById('modalTransactionName');
+            const amountElement = document.getElementById('modalTransactionAmount');
+            const categoryElement = document.getElementById('modalTransactionCategory');
+            const dateElement = document.getElementById('modalTransactionDate');
+            const descriptionElement = document.getElementById('modalTransactionDescription');
+
+            if (!nameElement || !amountElement || !categoryElement || !dateElement || !descriptionElement) {
+                console.error('One or more modal content elements not found');
+                return;
+            }
+
+            nameElement.innerText = name;
+            amountElement.innerText = amount;
+            categoryElement.innerText = category;
+            dateElement.innerText = date;
+            descriptionElement.innerText = description;
+
+            console.log('Modal content updated');
 
             // Show the modal
-            detailModal.style.display = 'block';
+            transactionDetailModal.style.display = 'block';
+            console.log('Modal displayed');
         });
     });
 
@@ -272,10 +305,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const form = document.getElementById('editTransactionForm');
         form.action = `/edit-transaction/${detailModal.dataset.transactionId}/`;
         form.querySelector('#editTransactionId').value = detailModal.dataset.transactionId;
-        form.querySelector('#name').value = detailModal.dataset.name;
-        form.querySelector('#amount').value = detailModal.dataset.amount;
-        form.querySelector('#category').value = detailModal.dataset.categoryId;
-        form.querySelector('#description').value = detailModal.dataset.description;
+        form.querySelector('#editName').value = detailModal.dataset.name;
+        form.querySelector('#editAmount').value = detailModal.dataset.amount;
+        form.querySelector('#editCategory').value = detailModal.dataset.categoryId;
+        form.querySelector('#editDescription').value = detailModal.dataset.description;
         document.getElementById('editTransactionModal').style.display = 'block';
     });
 

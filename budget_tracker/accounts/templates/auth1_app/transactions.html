@@ -8,76 +8,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="{% static 'css/transactionsstyle.css' %}">
+    <title>Transactions</title>
+    <link rel="stylesheet" href="{% static 'css/homestyle.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700&display=swap">
+    <script src="{% static 'js/home.js' %}"></script>
 </head>
 <body>
+    <div class="container">
+        <h2>Transactions</h2>
+        <h2>Pie Chart Here</h2>
 
-    <h2>Transactions</h2>
-    <h2>Pie Chart Here</h2>
+        <!-- Filter Toggle -->
+        <div class="filter-bar">
+            <div class="filters">
+                <a href="?type=all&category=all" class="{% if filter_type == 'all' %}active{% endif %}">All</a>
+                <a href="?type=income&category=all" class="{% if filter_type == 'income' %}active{% endif %}">Income</a>
+                <a href="?type=expense&category=all" class="{% if filter_type == 'expense' %}active{% endif %}">Expense</a>
+            </div>
 
-    <!-- Filter Toggle -->
-    <div class="filter-bar">
-        <div class="filters">
-            <a href="?type=all&category=all" class="{% if filter_type == 'all' %}active{% endif %}">All</a>
-            <a href="?type=income&category=all" class="{% if filter_type == 'income' %}active{% endif %}">Income</a>
-            <a href="?type=expense&category=all" class="{% if filter_type == 'expense' %}active{% endif %}">Expense</a>
+            <!-- Category Dropdown -->
+            <form method="get" style="margin-top: 1em;">
+                <input type="hidden" name="type" value="{{ filter_type }}">
+                <select name="category" id="category" onchange="this.form.submit()">
+                    <option value="all" {% if selected_category == 'all' %}selected{% endif %}>All</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if category.id|stringformat:"s" == selected_category %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
         </div>
 
-        <!-- Category Dropdown -->
-        <form method="get" style="margin-top: 1em;">
-            <input type="hidden" name="type" value="{{ filter_type }}">
-            <select name="category" id="category" onchange="this.form.submit()">
-                <option value="all" {% if selected_category == 'all' %}selected{% endif %}>All</option>
-                {% for category in categories %}
-                    <option value="{{ category.id }}" {% if category.id|stringformat:"s" == selected_category %}selected{% endif %}>
-                        {{ category.name }}
-                    </option>
+        <table class="transaction-table">
+            <thead>
+                <tr>
+                    <th>Transaction</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr class="transaction-row" 
+                    data-id="{{ transaction.id }}"
+                    data-name="{{ transaction.name }}"
+                    data-amount="{{ transaction.amount }}"
+                    data-category="{{ transaction.category.name }}"
+                    data-category-id="{{ transaction.category.id }}"
+                    data-date="{{ transaction.date|date:'Y-m-d H:i' }}"
+                    data-description="{{ transaction.description|default:'' }}"
+                    data-type="{{ transaction.type }}">
+                    <td>
+                        <strong>{{ transaction.name }}</strong> / {{ transaction.category.name }}
+                    </td>
+                    <td class="{% if transaction.type == 'income' %}income{% else %}expense{% endif %}">
+                        {% if transaction.type == 'income' %}+ {% else %}- {% endif %}
+                        {{ transaction.amount|floatformat:2|intcomma }}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2">No transactions found.</td>
+                </tr>
                 {% endfor %}
-            </select>
-        </form>
-    </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Transaction</th>
-                <th>Amount</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for transaction in transactions %}
-            <tr>
-                <td>
-                    <strong>{{ transaction.name }}</strong> / {{ transaction.category.name }}
-                </td>
-                <td class="{% if transaction.type == 'income' %}income{% else %}expense{% endif %}">
-                    {% if transaction.type == 'income' %}+ {% else %}- {% endif %}
-                    {{ transaction.amount|floatformat:2|intcomma }}
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="2">No transactions found.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    {% if page_obj.paginator.num_pages > 1 %}
-    <div class="pagination">
-        {% if page_obj.has_previous %}
-            <a href="?type={{ filter_type }}&category={{ selected_category }}&page={{ page_obj.previous_page_number }}">Previous</a>
+        {% if page_obj.paginator.num_pages > 1 %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?type={{ filter_type }}&category={{ selected_category }}&page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+        
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        
+            {% if page_obj.has_next %}
+                <a href="?type={{ filter_type }}&category={{ selected_category }}&page={{ page_obj.next_page_number }}">Next</a>
+            {% endif %}
+        </div>
         {% endif %}
-    
-        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-    
-        {% if page_obj.has_next %}
-            <a href="?type={{ filter_type }}&category={{ selected_category }}&page={{ page_obj.next_page_number }}">Next</a>
-        {% endif %}
-    </div>
-{% endif %}
 
+        {% include "partials/home/transaction_detail_modal.html" %}
+        {% include "partials/home/edit_transaction_modal.html" %}
+        {% include "partials/home/delete_transaction_confirmation_modal.html" %}
+    </div>
 </body>
 {% endblock %}
 

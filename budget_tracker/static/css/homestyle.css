@@ -480,6 +480,21 @@ tbody tr:last-child td {
     overflow: auto;
 }
 
+/* Transaction Detail Modal */
+#transactionDetailModal {
+    z-index: 999;
+}
+
+/* Edit Transaction Modal */
+#editTransactionModal {
+    z-index: 1000;
+}
+
+/* Delete Transaction Modal */
+#deleteTransactionModal {
+    z-index: 1000;
+}
+
 /* Modal Box */
 .modal-content {
     background: linear-gradient(to bottom, #182A1B, #0A160F);
@@ -492,6 +507,7 @@ tbody tr:last-child td {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     color: #c1e4c0;
     border: 1px solid #2BB32A;
+    z-index: 1000;
 }
 
 .modal-content label {
@@ -585,4 +601,14 @@ tbody tr:last-child td {
     table td {
         padding: 8px;
     }
+}
+
+/* Edit Transaction Modal Content */
+#editTransactionModal .modal-content {
+    z-index: 1001;
+}
+
+/* Delete Transaction Modal Content */
+#deleteTransactionModal .modal-content {
+    z-index: 1001;
 }
