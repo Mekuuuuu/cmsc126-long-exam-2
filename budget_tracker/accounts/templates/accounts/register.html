@@ -1,13 +1,16 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Sign-up</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/registerstyle.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700&display=swap">
+    <link rel="icon" href="/static/images/logo.png" type="image/png">
 </head>
+
 <body>
     <div class="container">
         <h2>Sign-up</h2>
@@ -19,16 +22,16 @@
                 {{ field.label_tag }}
                 {{ field }}
                 {% if field.errors %}
-                    {% for error in field.errors %}
-                        <div class="error-message">{{ error }}</div>
-                    {% endfor %}
+                {% for error in field.errors %}
+                <div class="error-message">{{ error }}</div>
+                {% endfor %}
                 {% endif %}
             </div>
             {% endfor %}
             {% if form.non_field_errors %}
-                {% for error in form.non_field_errors %}
-                    <div class="error-message">{{ error }}</div>
-                {% endfor %}
+            {% for error in form.non_field_errors %}
+            <div class="error-message">{{ error }}</div>
+            {% endfor %}
             {% endif %}
             <button type="submit">Create Account</button>
         </form>
@@ -40,4 +43,5 @@
 
     <img src="{% static 'images/circleStar.png' %}" alt="Corner Image" class="corner-image">
 </body>
+
 </html>
