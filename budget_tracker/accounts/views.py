@@ -13,6 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from collections import defaultdict
 
 
+from django.core.paginator import Paginator
 
 def register_view(request):
     if request.method == "POST":
@@ -114,6 +115,44 @@ class ProtectedView(LoginRequiredMixin, View):
     
     def get(self, request):
         return render(request, 'registration/protected.html')
+
+# Protected View
+class TransactionsView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
+
+    def get(self, request):
+        # Get all transactions for the logged-in user, ordered by date
+        filter_type = request.GET.get('type', 'all')  # can be 'income', 'expense', or 'all'
+        category_id = request.GET.get('category', 'all')
+        page_number = request.GET.get('page', 1)
+        
+        transactions = Transaction.objects.filter(user=request.user).order_by('-date')
+        
+        # Filter by type
+        if filter_type in ['income', 'expense']:
+            transactions = transactions.filter(type=filter_type)
+            categories = Category.objects.filter(type=filter_type)
+        else:
+            categories = Category.objects.all()
+            
+        # Filter by category
+        if category_id != 'all':
+            transactions = transactions.filter(category_id=category_id)
+        
+        paginator = Paginator(transactions, 20)
+        page_obj = paginator.get_page(page_number)
+        
+
+        return render(request, 'auth1_app/transactions.html', {
+            'transactions': page_obj.object_list,
+            'page_obj': page_obj,
+            'categories': categories,
+            'filter_type': filter_type,
+            'selected_category': category_id,
+        })
+        
+        
     
 @login_required
 def add_transaction(request):
