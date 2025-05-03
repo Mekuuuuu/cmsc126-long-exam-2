@@ -3,7 +3,7 @@
     <div class="modal-content">
         <h3>Edit Transaction</h3>
         
-        <form id="editTransactionForm" method="POST" action="">
+        <form id="editTransactionForm" method="POST" action="{% url 'edit_transaction' 0 %}" onsubmit="return false;">
             {% csrf_token %}
             <input type="hidden" name="transaction_id" id="editTransactionId">
             
@@ -14,25 +14,27 @@
     
             <div class="form-group">
                 <label for="amount">Amount</label>
-                <input type="number" id="amount" name="amount" value="{{ transaction.amount }}" step="0.01" required />
+                <input type="number" id="amount" name="amount" step="0.01" required />
             </div>
     
             <div class="form-group">
                 <label for="category">Category</label>
                 <select id="category" name="category" required>
                     {% for category in categories %}
-                        <option value="{{ category.id }}" {% if category.id == transaction.category.id %}selected{% endif %}>{{ category.name }}</option>
+                        <option value="{{ category.id }}">{{ category.name }}</option>
                     {% endfor %}
                 </select>
             </div>
     
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea id="description" name="description" rows="4">{{ transaction.description }}</textarea>
+                <textarea id="description" name="description" rows="4"></textarea>
             </div>
-    
-            <button type="submit" class="save-btn">Save</button>
-            <button type="button" class="close-modal">Cancel</button>
+            
+            <div class="form-actions">
+                <button type="submit" class="save-btn">Save</button>
+                <button type="button" onclick="document.getElementById('editTransactionModal').style.display='none'">Cancel</button>
+            </div>
         </form>
     </div>
  </div>

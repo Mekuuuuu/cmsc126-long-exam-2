@@ -285,9 +285,10 @@ document.addEventListener("DOMContentLoaded", () => {
         saveButton.addEventListener('click', function(e) {
             e.preventDefault();
             const form = document.getElementById('editTransactionForm');
+            const transactionId = form.querySelector('#editTransactionId').value;
             const formData = new FormData(form);
             
-            fetch(form.action, {
+            fetch(`/edit-transaction/${transactionId}/`, {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -296,7 +297,7 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .then(response => {
                 if (response.ok) {
-                    window.location.href = '/';
+                    window.location.href = '/transactions/';
                 }
             })
             .catch(error => {
@@ -307,6 +308,57 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("deleteTransactionBtn").addEventListener('click', function() {
         const detailModal = document.getElementById('transactionDetailModal');
-        window.location.href = `/delete-transaction/${detailModal.dataset.transactionId}/`;
+        const deleteModal = document.getElementById('deleteTransactionModal');
+        
+        if (!detailModal || !deleteModal) {
+            console.error('Required modals not found');
+            return;
+        }
+        
+        const transactionId = detailModal.dataset.transactionId;
+        const form = deleteModal.querySelector('form');
+        
+        if (!form) {
+            console.error('Delete form not found');
+            return;
+        }
+        
+        // Update the form action URL
+        form.action = `/delete-transaction/${transactionId}/`;
+        
+        // Update the transaction details in the modal
+        const nameSpan = document.getElementById('deleteTransactionName');
+        const amountSpan = document.getElementById('deleteTransactionAmount');
+        
+        if (nameSpan && amountSpan) {
+            nameSpan.textContent = detailModal.dataset.name;
+            amountSpan.textContent = detailModal.dataset.amount;
+        }
+        
+        // Close the transaction detail modal first
+        detailModal.style.display = 'none';
+        
+        // Show the delete confirmation modal
+        deleteModal.style.display = 'block';
+        
+        // Handle form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/transactions/';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
     });
 });
