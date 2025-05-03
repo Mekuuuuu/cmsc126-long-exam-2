@@ -127,18 +127,19 @@ Here’s a step-by-step overview of how users interact with SimpliFi:
 
 ### 🔐 Authentication Flow
 - **Login Page**: Users are first directed to the login page.
-  - ![Alt Text](relative/path/to/image.png)
+  ![Alt Text](readmeResources/1.png)
 - **Sign Up Option**: If users don’t have an account yet, they can navigate to the **Sign Up** page.
-  - ![Alt Text](relative/path/to/image.png)
+  ![Alt Text](readmeResources/2.png)
+  - After signing up, it logs users in their account. When they logout, they will go to the 'Login Page' where they can login using the account they created.
 - **Return to Login**: After creating an account, users return to the login page to sign in.
-  - ![Alt Text](relative/path/to/image.png) 
+  ![Alt Text](readmeResources/3.png) 
 
 ---
 
 ### 🏠 Home Screen (Dashboard)
 After logging in, users are directed to the **Dashboard**, which provides an overview of their financial activity.
 
-![Alt Text](relative/path/to/image.png)
+![Alt Text](readmeResources/4.png)
 
 #### Key Sections:
 - **Navigation Buttons**:  
@@ -152,11 +153,24 @@ After logging in, users are directed to the **Dashboard**, which provides an ove
 - **Welcome Message**:  
   - Displays `Welcome, [Username]!`  
   - Shows the **total balance** at the top.
+ 
+- **Add Transaction**
+  - Click the '+Add Transaction' button to add a transaction.
+    - Example: Expense 
+      ![Alt Text](readmeResources/5.png)
+    - Example: Income 
+      ![Alt Text](readmeResources/6.png)
+  - The transactions are now reflected on the table as well as the bar chart.
+    ![Alt Text](readmeResources/7.png)
 
 - **Income vs. Expense Bar Chart**:  
   - Interactive dropdown to toggle between **weekly**, **monthly**, and **yearly** views.  
   - Clickable legend to toggle visibility of **Income**, **Expense**, or both on the chart.
-
+    - Disable the 'Expense' toggle in the barchart's legend 
+      ![Alt Text](readmeResources/9.png)
+    - Disable the 'Income' toggle in the barchart's legend 
+      ![Alt Text](readmeResources/8.png)
+        
 - **Recent Transactions Table**:  
   - Displays the most recent transactions in a table format.  
   - A **"See All Transactions"** link is available at the bottom, redirecting users to the full **Transactions** page.
