@@ -9,6 +9,8 @@
     <title>Home</title>
     <link rel="stylesheet" href="{% static 'css/homestyle.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
@@ -32,9 +34,100 @@
         <p>Total Balance: ₱{{ total_balance|floatformat:2|intcomma }}</p>
     </div>
 
+    <!-- Charts -->
+    <!--Test Charts-->
+    <!-- Chart Section -->
+
+
+
     <div class="main-content">
         <div class="left-image">
-            <img src="{% static 'images/simplifyFinances.png' %}" alt="Login Image" class="side-image" width="400px">
+            <div class="transactions-header">
+                <h2>Income vs Expenses</h2>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="myChart"></canvas>
+            </div>
+
+            <div class="filter-dropdown">
+                <select id="timeFilter">
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly" selected>Monthly</option>
+                    <option value="yearly">Yearly</option>
+                </select>
+            </div>
+
+            <script>
+                const canvas = document.getElementById('myChart');
+                const container = canvas.parentElement;
+
+                const chartData = {
+                    monthly: {
+                        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                        income: [12, 19, 3, 5, 2, 3],
+                        expense: [10, 15, 8, 4, 1, 2]
+                    },
+                    weekly: {
+                        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                        income: [100, 150, 80, 120],
+                        expense: [90, 120, 70, 110]
+                    },
+                    yearly: {
+                        labels: ['2020', '2021', '2022', '2023', '2024'],
+                        income: [1000, 1500, 1100, 1300, 1400],
+                        expense: [900, 1300, 950, 1200, 1250]
+                    }
+                };
+
+                // Initial chart setup
+                let chart = new Chart(canvas, {
+                    type: 'bar',
+                    data: {
+                        labels: chartData.monthly.labels,
+                        datasets: [
+                            {
+                                label: 'Income',
+                                data: chartData.monthly.income,
+                                backgroundColor: '#007A75'
+                            },
+                            {
+                                label: 'Expense',
+                                data: chartData.monthly.expense,
+                                backgroundColor: '#7BBB24'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { stacked: false },
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+
+                // Handle dropdown change
+                document.getElementById('timeFilter').addEventListener('change', function () {
+                    const selected = this.value;
+                    chart.data.labels = chartData[selected].labels;
+                    chart.data.datasets[0].data = chartData[selected].income;
+                    chart.data.datasets[1].data = chartData[selected].expense;
+                    chart.update();
+                });
+            </script>
+
+
+            <script id="labels" type="application/json">
+                {{ labels|json_script }}
+            </script>
+            <script id="income_totals" type="application/json">
+                {{ income_totals|json_script }}
+            </script>
+            <script id="expense_totals" type="application/json">
+                {{ expense_totals|json_script }}
+            </script>
         </div>
         <div class="right-table">
             <div class="transactions-header">
@@ -57,7 +150,7 @@
                         </td>
                         <td class="{% if transaction.type == 'income' %}income{% else %}expense{% endif %}">
                             {% if transaction.type == 'income' %}+ {% else %}- {% endif %}
-                            {{ transaction.amount|floatformat:2|intcomma  }}
+                            {{ transaction.amount|floatformat:2|intcomma }}
                         </td>
                     </tr>
                     {% empty %}
@@ -69,7 +162,7 @@
             </table>
 
             {% if transactions %}
-                <a href="">See all transactions</a>
+            <a href="">See all transactions</a>
             {% endif %}
         </div>
 
@@ -170,7 +263,7 @@
             }
         };
 
-        document.getElementById("addCategoryForm").addEventListener("submit", function(event) {
+        document.getElementById("addCategoryForm").addEventListener("submit", function (event) {
             event.preventDefault();  // Prevent the form from submitting normally
 
             const formData = new FormData(this);  // Collect the form data
@@ -181,35 +274,35 @@
                 method: "POST",
                 body: formData,
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.category_id && data.category_name) {
-                    // ✅ Create and select the new option
-                    const newOption = document.createElement('option');
-                    newOption.value = data.category_id;
-                    newOption.textContent = data.category_name;
-                    newOption.dataset.type = newCategoryType;
-                    newOption.selected = true;
+                .then(response => response.json())
+                .then(data => {
+                    if (data.category_id && data.category_name) {
+                        // ✅ Create and select the new option
+                        const newOption = document.createElement('option');
+                        newOption.value = data.category_id;
+                        newOption.textContent = data.category_name;
+                        newOption.dataset.type = newCategoryType;
+                        newOption.selected = true;
 
-                    categorySelect.appendChild(newOption);
+                        categorySelect.appendChild(newOption);
 
-                    // ✅ Set type radio button and filter
-                    const radioToSelect = document.querySelector(`input[name="type"][value="${newCategoryType}"]`);
-                    if (radioToSelect) {
-                        radioToSelect.checked = true;
-                        filterCategories(newCategoryType);
+                        // ✅ Set type radio button and filter
+                        const radioToSelect = document.querySelector(`input[name="type"][value="${newCategoryType}"]`);
+                        if (radioToSelect) {
+                            radioToSelect.checked = true;
+                            filterCategories(newCategoryType);
+                        }
+
+                        // ✅ Close modal
+                        closeCategoryModal();
+                    } else {
+                        alert('Error creating category');
                     }
-
-                    // ✅ Close modal
-                    closeCategoryModal();
-                } else {
-                    alert('Error creating category');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('There was an error creating the category');
-            });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('There was an error creating the category');
+                });
         });
 
         document.getElementById("addCategoryBtn").onclick = () => {
@@ -263,4 +356,5 @@
         });
     </script>
 </body>
+
 </html>

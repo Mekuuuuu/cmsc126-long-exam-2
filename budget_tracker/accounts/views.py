@@ -10,6 +10,9 @@ from transactions.models import Transaction, Category
 from django.db.models import Sum
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from collections import defaultdict
+
+
 
 def register_view(request):
     if request.method == "POST":
@@ -64,22 +67,43 @@ def logout_view(request):
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def home_view(request):
+    # Get all transactions for the user
     full_transactions = Transaction.objects.filter(user=request.user).order_by('-date')
-    
+
+    # Calculate income and expense totals
     income = full_transactions.filter(type='income').aggregate(total_income=Sum('amount'))['total_income'] or 0
     expense = full_transactions.filter(type='expense').aggregate(total_expenses=Sum('amount'))['total_expenses'] or 0
-
     total_balance = income - expense
-    
+
+    # Prepare chart data
+    dates = set()
+    income_data = defaultdict(float)
+    expense_data = defaultdict(float)
+
+    for txn in full_transactions:
+        date_str = txn.datetime.strftime('%Y-%m-%d')
+        dates.add(date_str)
+        if txn.type == 'income':
+            income_data[date_str] += txn.amount
+        else:
+            expense_data[date_str] += txn.amount
+
+    sorted_dates = sorted(dates)
+
+    # Prepare other data
     recent_transactions = full_transactions[:5]
-    
     categories = Category.objects.all()
+
+    # Combine all data in one context
     context = {
         'transactions': recent_transactions,
         'total_balance': total_balance,
         'categories': categories,
-        
+        'labels': sorted_dates,
+        'income_totals': [income_data[date] for date in sorted_dates],
+        'expense_totals': [expense_data[date] for date in sorted_dates],
     }
+
     return render(request, 'auth1_app/home.html', context)
 
 # Protected View
