@@ -10,6 +10,7 @@
 <html lang="en">
 
 {% block content %}
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,11 +23,14 @@
 
 <body>
 
-    <div class="container">
-        <p>Welcome, <strong>{{ request.user.first_name }} {{ request.user.last_name }}!</strong></p>
-        <p>Total Balance: ₱{{ total_balance|floatformat:2|intcomma }}</p>
+    <div class="top-bar">
+        <div class="container topbar-content">
+            <p>Welcome, <strong>{{ request.user.first_name }} {{ request.user.last_name }}!</strong></p>
+            <div class="container-totalbalance">
+                <p>Total Balance: ₱{{ total_balance|floatformat:2|intcomma }}</p>
+            </div>
+        </div>
     </div>
-
     <!-- Charts -->
     <!--Test Charts-->
     <!-- Chart Section -->
@@ -96,7 +100,7 @@
                         maintainAspectRatio: false,
                         scales: {
                             x: { stacked: false },
-                            y: { beginAtZero: true},
+                            y: { beginAtZero: true },
                         }
                     }
                 });
@@ -352,4 +356,5 @@
     </script>
 </body>
 {% endblock %}
+
 </html>
